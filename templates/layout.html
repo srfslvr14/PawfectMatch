@@ -14,7 +14,7 @@
     <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="[[=URL('index')]]">
-          Learn py4web
+          Pawfect Match
           <!-- <img class="logo" width="150" src="images/site_icon.png"> -->
         </a>
 
@@ -33,18 +33,20 @@
         </div>
 
         <div class="navbar-end">
+          [[if globals().get('user'):]]
+          <a class="navbar-item " href="[[=URL('index')]]">Home</a>
+          <a class="navbar-item " href="[[=URL('matches')]]">Matches</a>
           <div class="navbar-item">
             <div class="buttons">
-              [[if globals().get('user'):]]
                 <div class="navbar-item has-dropdown is-hoverable">
                   <a class="navbar-link is-primary">
-                    [[=globals().get('user').get('email')]]
+                    <!-- [[=globals().get('user').get('email')]] -->
+                    Profile
                   </a>
                   <div class="navbar-dropdown">
-                    <a class="navbar-item" href="[[=URL('auth/logout')]]">Logout</a>
                     <a class="navbar-item" href="[[=URL('auth/profile')]]">Profile</a>
-                    <a class="navbar-item" href="[[=URL('auth/change_password')]]">Change Password</a></li>
-
+                    <a class="navbar-item" href="[[=URL('auth/change_password')]]">Settings</a></li>
+                    <a class="navbar-item" href="[[=URL('auth/logout')]]">Logout</a>
                   </div>
                 </div>
               [[else:]]
@@ -60,12 +62,12 @@
     <!-- beginning of HTML inserted by extending template -->
     [[include]]
     <!-- end of HTML inserted by extending template -->
-    <footer class="footer">
+    <!-- <footer class="footer">
       <div class="content has-text-centered">
         Made with <a href="https://py4web.com">py4web</a>.
         <a href="https://learn-py4web.github.io">Learn py4web!</a>
       </div>
-    </footer>
+    </footer> -->
   </body>
   <script src="js/sugar.min.js"></script>
   <script src="js/axios.min.js"></script>

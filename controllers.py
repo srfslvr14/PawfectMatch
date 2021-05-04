@@ -35,7 +35,7 @@ from py4web.utils.form import Form, FormStyleBulma
 url_signer = URLSigner(session)
 
 @action('index')
-@action.uses(db, auth, 'index.html')
+@action.uses(db, auth.user, 'index.html')
 def index():
     ## TODO: Show to each logged in user the birds they have seen with their count.
     # The table must have an edit button to edit a row, and also, a +1 button to increase the count
@@ -44,20 +44,10 @@ def index():
     rows = db(db.bird.seen_by == get_user_email()).select()
     return dict(rows = rows, url_signer = url_signer)
 
-@action('add', method=["GET", "POST"])
-@action.uses(db, session, auth.user, 'add.html')
-def add():
-    form = Form(db.bird, csrf_session=session, formstyle=FormStyleBulma)
-    if form.accepted:
-        redirect(URL('index'))
-    # else:
-    #     db.bird.insert(bird_name=request.params.get("bird_name"))
-    #     db.bird.insert(bird_weight=request.params.get("bird_weight"))
-    #     db.bird.insert(bird_diet=request.params.get("bird_diet"))
-    #     db.bird.insert(bird_habitat=request.params.get("bird_habitat"))
-        
-    #     redirect(URL('index'))
-    return dict(form = form)
+@action('matches', method=["GET", "POST"])
+@action.uses(db, session, auth.user, 'matches.html')
+def matches():
+    return dict()
 
 @action('edit/<bird_id:int>', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'edit.html')
@@ -81,12 +71,3 @@ def inc(bird_id=None):
     db(db.bird.id == bird_id).update(bird_count=db.bird.bird_count+1)
     redirect(URL('index'))
 
-# This is an example only, to be used as inspiration for your code to increment the bird count.
-# Note that the bird_id parameter ...
-@action('capitalize/<bird_id:int>') # the :int means: please convert this to an int.
-@action.uses(db, auth.user, url_signer.verify())
-# ... has to match the bird_id parameter of the Python function here.
-def capitalize(bird_id=None):
-    assert bird_id is not None
-    bird = db.bird[bird_id]
-    db(db.bird.id == bird_id).update(bird_name=bird.bird_name.capitalize())
