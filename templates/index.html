@@ -1,0 +1,46 @@
+[[extend 'layout.html']]
+
+<div class="section">
+   <!-- Put the table here -->
+   <a class="button is-success" href="[[=URL('add')]]">
+      <span class="icon"><i class="fa fa-plus"></i></span>
+      <span>Add</span>
+   </a>
+
+   <div class="container">
+      <table class="table is-striped is-fullwidth">
+         <thead>
+            <tr>
+               <th class="has-text-left">Bird</th>
+               <th class="has-text-left">Weight</th>
+               <th class="has-text-left">Diet</th>
+               <th class="has-text-left">Habitat</th>
+               <th class="has-text-left">N Sightings</th>
+               <th></th>
+               <th></th>
+            </tr>
+         </thead>
+         <tbody>
+            [[for r in rows:]]
+            <tr>
+               <td>[[=r.bird_name]]</td>
+               <td>[[=r.bird_weight]]</td>
+               <td>[[=r.bird_diet]]</td>
+               <td>[[=r.bird_habitat]]</td>
+               <td>[[=r.bird_count]]</td>
+               <td>
+                  <a class="button" href="[[=URL('edit', r.id)]]">
+                     <span class="icon"><i class="fa fa-fw fa-pencil" ></i> </span><span>Edit</span>
+                  </a>
+               </td>
+               <td>
+                  <a class="button" href="[[=URL('inc', r.id, signer = url_signer)]]">
+                     <i class="fa fa-plus" ></i> 1
+                  </a>
+               </td>
+            </tr>
+            [[pass]]
+         </tbody>
+      </table>
+   </div>
+</div>
