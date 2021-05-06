@@ -21,21 +21,61 @@ def get_time():
 ## always commit your models to avoid problems later
 
 db.define_table(
-    'bird',
-    ### TODO: define the fields that are in the json.
-    Field('bird_name', requires=IS_NOT_EMPTY()),
-    Field('bird_weight', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 1e6)),
-    Field('bird_diet', requires=IS_NOT_EMPTY()),
-    Field('bird_habitat', requires=IS_NOT_EMPTY()),
-    Field('bird_count', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 1e6)),
-    Field('seen_by', default=get_user_email),
+    'dbuser',
+    Field('first_name', requires=IS_NOT_EMPTY()),
+    Field('last_name', requires=IS_NOT_EMPTY()),
+    Field('user_email', default=get_user_email ),
+    Field('password', requires=IS_NOT_EMPTY()),
 )
 
-db.bird.id.readable = False
-db.bird.seen_by.readable = db.bird.seen_by.writable = False
-db.bird.bird_name.label = T('Bird')
-db.bird.bird_weight.label = T('Weight')
-db.bird.bird_diet.label = T('Diet')
-db.bird.bird_habitat.label = T('Habitat')
+db.define_table(
+    'user_pref',
+    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
+    Field('breed'),
+    Field('size'),
+    Field('fur_color'),
+    Field('age'),
+    Field('house_trained'),
+    Field('kid_safe'),
+    Field('pet_safe'),
+)
+
+db.define_table(
+    'dog',
+    Field('dog_id', requires=IS_NOT_EMPTY()),
+    Field('dog_name'),
+    Field('dog_photo'),
+    Field('dog_breed'),
+    Field('dog_age'),
+    Field('dog_compscore', 'integer', default=0, requires=IS_INT_IN_RANGE(0,10)),
+)
+
+
+db.define_table(
+    'recent_hist',
+    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
+    Field('table_index'),
+    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
+    Field('is_matched', 'boolean', default=False),
+)
+
+db.define_table(
+    'next_queue',
+    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
+    Field('table_index'),
+    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
+)
+
+db.define_table(
+    'favorites',
+    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
+    Field('table_index'),
+    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
+)
+
+db.dbuser.id.readable = False
+db.dbuser.id.writable = False
+db.dbuser.first_name.label = "User First"
+db.dbuser.last_name.label = "User Last"
 
 db.commit()

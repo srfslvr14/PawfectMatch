@@ -37,37 +37,11 @@ url_signer = URLSigner(session)
 @action('index')
 @action.uses(db, auth.user, 'index.html')
 def index():
-    ## TODO: Show to each logged in user the birds they have seen with their count.
-    # The table must have an edit button to edit a row, and also, a +1 button to increase the count
-    # by 1 (this needs to be protected by a signed URL).
-    # On top of the table there is a button to insert a new bird.
-    rows = db(db.bird.seen_by == get_user_email()).select()
-    return dict(rows = rows, url_signer = url_signer)
+    return dict()
 
 @action('matches', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'matches.html')
 def matches():
     return dict()
 
-@action('edit/<bird_id:int>', method=["GET", "POST"])
-@action.uses(db, session, auth.user, 'edit.html')
-def edit(bird_id=None):
-    assert bird_id is not None
-    bird = db(db.bird.id == bird_id).select().first()
-    if bird is None:
-        #Nothing to edit
-        redirect(URL('index'))
-    form = Form(db.bird, record=bird, deletable=False, csrf_session=session, formstyle=FormStyleBulma)
-    if form.accepted:
-        #Edit already happened
-        redirect(URL('index'))
-    return dict(form=form)
-
-@action('inc/<bird_id:int>')
-@action.uses(db, session, auth.user, url_signer.verify())
-def inc(bird_id=None):
-    assert bird_id is not None
-    bird = db.bird[bird_id]
-    db(db.bird.id == bird_id).update(bird_count=db.bird.bird_count+1)
-    redirect(URL('index'))
 
