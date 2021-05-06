@@ -39,3 +39,13 @@ CREATE TABLE "bird"(
     "seen_by" CHAR(512)
 );
 success!
+timestamp: 2021-05-05T22:24:31.310625
+CREATE TABLE "dbUser"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "userid" CHAR(512) NOT NULL UNIQUE,
+    "bio_status" CHAR(512),
+    "active_stat" CHAR(512),
+    "profile_pic" CHAR(512),
+    "chosen_term" CHAR(512)
+);
+success!
