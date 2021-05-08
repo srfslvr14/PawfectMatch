@@ -37,10 +37,6 @@ url_signer = URLSigner(session)
 @action('index')
 @action.uses(db, auth.user, 'index.html')
 def index():
-    ## TODO: Show to each logged in user the birds they have seen with their count.
-    # The table must have an edit button to edit a row, and also, a +1 button to increase the count
-    # by 1 (this needs to be protected by a signed URL).
-    # On top of the table there is a button to insert a new bird.
     return dict()
 
 @action('matches', method=["GET", "POST"])
