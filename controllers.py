@@ -43,3 +43,4 @@ def index():
 @action.uses(db, session, auth.user, 'matches.html')
 def matches():
     return dict()
+
