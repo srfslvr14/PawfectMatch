@@ -39,3 +39,110 @@ CREATE TABLE "bird"(
     "seen_by" CHAR(512)
 );
 success!
+timestamp: 2021-05-06T12:50:47.054963
+CREATE TABLE "dbuser"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "user_email" CHAR(512),
+    "password" CHAR(512)
+);
+success!
+timestamp: 2021-05-06T12:50:47.057762
+CREATE TABLE "db_userprefrences"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "breed" CHAR(512),
+    "size" CHAR(512),
+    "fur_color" CHAR(512),
+    "age" CHAR(512),
+    "house_trained" CHAR(512),
+    "kid_safe" CHAR(512),
+    "pet_safe" CHAR(512)
+);
+success!
+timestamp: 2021-05-06T12:51:18.032074
+CREATE TABLE "db_dog"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "dog_id" CHAR(512),
+    "dog_name" CHAR(512),
+    "dog_photo" CHAR(512),
+    "dog_breed" CHAR(512),
+    "dog_age" CHAR(512),
+    "dog_compscore" INTEGER
+);
+success!
+timestamp: 2021-05-06T12:54:08.993655
+CREATE TABLE "db_recent_hist"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  ,
+    "is_matched" CHAR(1)
+);
+success!
+timestamp: 2021-05-06T12:54:27.296009
+CREATE TABLE "db_next_queue"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-05-06T12:54:27.298820
+CREATE TABLE "db_favorites"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-05-06T12:56:14.951236
+CREATE TABLE "user_pref"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "breed" CHAR(512),
+    "size" CHAR(512),
+    "fur_color" CHAR(512),
+    "age" CHAR(512),
+    "house_trained" CHAR(512),
+    "kid_safe" CHAR(512),
+    "pet_safe" CHAR(512)
+);
+success!
+timestamp: 2021-05-06T12:56:14.953588
+CREATE TABLE "dog"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "dog_id" CHAR(512),
+    "dog_name" CHAR(512),
+    "dog_photo" CHAR(512),
+    "dog_breed" CHAR(512),
+    "dog_age" CHAR(512),
+    "dog_compscore" INTEGER
+);
+success!
+timestamp: 2021-05-06T12:56:14.955376
+CREATE TABLE "recent_hist"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ,
+    "is_matched" CHAR(1)
+);
+success!
+timestamp: 2021-05-06T12:56:14.957007
+CREATE TABLE "next_queue"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-05-06T12:56:14.958959
+CREATE TABLE "favorites"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
+);
+success!
