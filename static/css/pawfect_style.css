@@ -1,7 +1,50 @@
+/* ############# GENERAL STUFF ############# */
+.center {
+    margin: auto;
+    width: 50%;
+}
+
+.center_text {
+  text-align: center;
+}
+
+/* ############# CROSS PAGE FORMATTING ############# */
 .main_panel_color {
     margin-top: 3%;
     margin-left: 3%;
     margin-right: 3%;
+    margin-bottom: 3%;
     background-color: #f2decd;
-    height: 200%;
 }
+
+/* ############# HOME PAGE ############# */
+/* .description_box {
+    background-color: white;
+    border-color: #c1272d;
+    border-width: 10px;
+    border-radius: 4px;
+    position: relative;
+    padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+} */
+
+p.info_box {
+    /* font-family: Helvetica; */
+    font-size: x-large;
+    padding: 2%;
+}
+
+.swipe_arrows_L {
+    margin: auto;
+    z-index: 1;
+}
+.swipe_arrows_R {
+    margin: auto;
+    z-index: 1;
+}
+/* ############# MATCHES PAGE ############# */
+
+
+/* ############# PROFILE PAGE ############# */
+
+
+/* ############# LOGIN PAGE ############# */

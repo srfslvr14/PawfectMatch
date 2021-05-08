@@ -146,3 +146,12 @@ CREATE TABLE "favorites"(
     "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
 );
 success!
+timestamp: 2021-05-07T18:16:29.935008
+CREATE TABLE "recent_list"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ,
+    "is_matched" CHAR(1)
+);
+success!

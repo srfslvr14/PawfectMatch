@@ -52,7 +52,7 @@ db.define_table(
 
 
 db.define_table(
-    'recent_hist',
+    'recent_list',
     Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
     Field('table_index'),
     Field('payload_dog', 'reference dog', ondelete="CASCADE"),
