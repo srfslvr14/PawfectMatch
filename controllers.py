@@ -48,3 +48,7 @@ def index():
 def matches():
     return dict()
 
+@action('login', method=["GET", "POST"])
+@action.uses(db, session, auth, 'login.html')
+def matches():
+    return dict()
