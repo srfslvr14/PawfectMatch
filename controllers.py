@@ -36,7 +36,7 @@ url_signer = URLSigner(session)
 
 @action('index')
 @action.uses(db, auth.user, 'index.html')
-def index(userID=None):
+def index():
     return dict()
 
 @action('matches', method=["GET", "POST"])
@@ -48,4 +48,31 @@ def matches(userID=None):
 @action.uses(db, session, auth.user, 'profile.html')
 def profile(userID=None):
     return dict()
+
+    
+@action('like_dog/<dog_id:int>')
+@action.uses(db, session, auth.user)
+def liked_currdog(dog_id=None):
+    assert dog_id is not None
+    # 1. get currdog from the id and userID
+    # 2. store currdog into match-history
+    # 3. if match-history.len is > 20, pop off #20 and store currdog as #1
+    # 4. if next-up db is empty,
+    #   5. loop through match-history and calculate prefrneces of the user, and store them into user-pref db
+    #   6. make an API call to fill it with 20 new dogs that fufill the prefrences just calculated 
+    # 7. pop off #1, and store it as currdog
+    print("liked")
+    redirect(URL('index'))
+
+@action('dislike_dog/<dog_id:int>')
+@action.uses(db, session, auth.user)
+def disliked_currdog(dog_id=None):
+    assert dog_id is not None
+    # 1. get currdog from the id and userID
+    # 2. if next-up db is empty,
+    #   3. loop through match-history and calculate prefrneces of the user, and store them into user-pref db
+    #   4. make an API call to fill it with 20 new dogs that fufill the prefrences just calculated 
+    # 5. pop off #1, and store it as currdog
+    print("disliked")
+    redirect(URL('index'))
 
