@@ -1,10 +1,90 @@
 [[extend 'layout.html']]
 
-<div class="section">
-    <div class="title has-text-centered" style="margin-top: 15%;">
-        Welcome to Pawfect Match!
-        <p>
-            New? Sign up! Existing user? Log in!
-        </p>
+<style>
+    [v-cloak] {
+         display: none;
+    }
+</style>
+
+<div class="section" id="vue-target" v-cloak style="padding-left: 5%; padding-right: 5%;">
+    <div class="title has-text-centered">
+        Start Swiping
     </div>
+    
+    <a id="dislike_button" class="button is-info" @click="no_match()">
+        <i class="fa fa-times"></i>&nbsp; No Match!
+    </a>
+    <a id="like_button" class="button is-danger" @click="match()">
+        <i class="fa fa-heart"></i>&nbsp; Match!
+    </a>
+
+    <a id="API_button" class="button is-success" @click="get_test()">
+        <i class="fa fa-paw"></i>&nbsp; API TEST!
+    </a>
+
+    <a id="init_button" class="button is-warning" @click="get_init()">
+        <i class="fa fa-paw"></i>&nbsp; INIT!
+    </a>
+
+    <!-- CURRENT PUP CARD DISPLAYED -->
+    <div class="container block">
+        <br>
+        <div v-for="p in pup_cards">
+            <div v-if="disp_cards_idx == p._idx" class="box notification">
+                Index: {{p._idx}} <br>
+                Id: {{p.id}} <br>
+                Name: {{p.name}} <br>
+                Breed: {{p.breed}}<br>
+                Age: {{p.age}}<br>
+                Gender: {{p.gender}}<br>
+                Size: {{p.size}}<br>
+                Fur: {{p.fur}}<br>
+                Potty Trained: {{p.potty}}<br>
+                Kid Friendly: {{p.kid}}<br>
+                Location: {{p.location}}<br>
+                Url: {{p.url}}<br>
+                <!-- <img src="{{p.image[0]}}" alt="Dog"> -->
+                <!-- Image: {{p.image[1]}}<br> -->
+            </div>
+        </div>
+    </div>
+
+<!-- 
+    <div class="columns">
+        <div class="column is-two-thirds">
+            <figure class="image is-3by2">
+                <img class="" src="https://lanecdr.org/wp-content/uploads/2019/08/placeholder.png">
+            </figure>
+        </div>
+        <div class="column is-one-third">
+            <div class="box">
+                <strong><p class="is-size-3-desktop has-text-centered">Information</p></strong>
+                <p class="info_box">Breed:</p>
+                <p class="info_box">Age:</p>
+                <p class="info_box">Gender:</p>
+                <p class="info_box">Size:</p>
+                <p class="info_box">Fur Color:</p>
+                <p class="info_box">Potty Trained:</p>
+                <p class="info_box">Kid Safe:</p>
+                <p class="info_box">Location:</p>
+            </div>
+        </div>
+    </div> -->
+
+    <strong><p class="is-size-1-desktop">DOGGO NAME</p></strong>
 </div>
+
+<script>
+    let set_curr_dogs_url = "[[=XML(set_curr_dogs_url)]]";
+    let get_curr_dogs_url = "[[=XML(get_curr_dogs_url)]]"; 
+    let update_idx_url = "[[=XML(update_idx_url)]]";  
+    let get_user_idx_url = "[[=XML(get_user_idx_url)]]";  
+</script>
+
+<script src="js/sugar.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/index.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/@petfinder/petfinder-js/dist/petfinder.min.js"></script>

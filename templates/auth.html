@@ -15,15 +15,23 @@
   }
 </style>
 
-<section class="section">
+<section class="section" style="min-height: 1000px;">
   <div class="title has-text-centered">
+    [[if globals().get('user') is None:]]
     Welcome to Pawfect Match!
-    <p>
-      New? Sign up!
-    </p>
-    <p>
-      Existing user? Log in!
-    </p>
+      <p>
+        <br>
+        New user? <a class="button is-link" href="[[=URL('auth/register')]]">Sign up</a>
+      </p>
+      <br>
+      <p>
+        Existing user? <a class="button is-success" href="[[=URL('auth/login')]]">Log in</a>
+      </p>
+    [[else:]]
+      Change your profile
+    [[pass]]
   </div>
   [[=form]]
 </section>
+
+
