@@ -1,0 +1,48 @@
+[[extend 'layout.html']]
+<div class="section">
+    <div class="title has-text-centered">
+        My Name
+    </div>
+    <figure class="image is-3by2">
+        <img class="is-rounded" src="https://lanecdr.org/wp-content/uploads/2019/08/placeholder.png">
+    </figure>
+    <br>
+    <div>
+        <strong><p class="is-size-3-desktop">Bio</p></strong>
+        <textarea class="textarea" placeholder="Profile Bio"></textarea>
+    </div>
+    <br>
+    <br>
+    <div>
+        <strong><p class="is-size-3-desktop">Preferences</p></strong>
+        <p class="info_box">Breed:</p>
+        <p class="info_box">Age Range:</p>
+        <p class="info_box">Gender:</p>
+        <p class="info_box">Size:</p>
+        <p class="info_box">Fur Color:</p>
+        <p class="info_box">Potty Trained:</p>
+        <p class="info_box">Kid Safe:</p>
+        <p class="info_box">Location:</p>
+    </div>
+
+<div class="container">
+    <label class="label">multiple select test</label>
+    <p class="control">
+    <select style="width:25%;" multiple>
+        <option value=""></option>
+        <option value="1">one</option>
+        <option value="2">two</option>
+        <option value="3">three</option>
+        <option value="4">four</option>
+        <option value="5">five</option>
+    </select>
+    </p>
+</div>
+
+</div>
+
+[[block page_scripts]]
+<script src="js/profile_page.js">
+
+</script>
+[[end]]
