@@ -12,13 +12,12 @@
   </head>
   <body style="background-color: #fbb03b;">
     <!-- Navigation bar -->
-    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="[[=URL('index')]]">
-          Pawfect Match
-          <!-- <img class="logo" width="150" src="images/site_icon.png"> -->
+          <img class="logo" src="images/logo.png">
+          <p> &nbsp; Pawfect Match</p>
         </a>
-
 
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="the-navbar-menu"
            onclick="this.classList.toggle('is-active');document.getElementById(this.dataset.target).classList.toggle('is-active');">
@@ -37,25 +36,22 @@
           [[if globals().get('user'):]]
           <a class="navbar-item " href="[[=URL('index')]]">Home</a>
           <a class="navbar-item " href="[[=URL('matches')]]">Matches</a>
-          <div class="navbar-item">
-            <div class="buttons">
-                <div class="navbar-item has-dropdown is-hoverable">
-                  <a class="navbar-link is-primary">
-                    <!-- [[=globals().get('user').get('email')]] -->
-                    Profile
-                  </a>
-                  <div class="navbar-dropdown">
-                    <a class="navbar-item" href="[[=URL('auth/profile')]]">Profile</a>
-                    <a class="navbar-item" href="[[=URL('auth/change_password')]]">Settings</a></li>
-                    <a class="navbar-item" href="[[=URL('auth/logout')]]">Logout</a>
-                  </div>
-                </div>
-              [[else:]]
-                <a class="button is-link" href="[[=URL('auth/register')]]">Sign up</a>
-                <a class="button is-success" href="[[=URL('auth/login')]]">Log in</a>
-              [[pass]]
+          <a class="navbar-item " href="[[=URL('profile')]]">Profile</a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link is-primary">
+              <!-- [[=globals().get('user').get('email')]] -->
+              Settings
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="[[=URL('auth/profile')]]">User Info</a>
+              <a class="navbar-item" href="[[=URL('auth/change_password')]]">Change Password</a>
             </div>
           </div>
+          <a class="navbar-item" href="[[=URL('auth/logout')]]">Logout</a>
+          [[else:]]
+            <a class="button is-link" href="[[=URL('auth/register')]]">Sign up</a>
+            <a class="button is-success" href="[[=URL('auth/login')]]">Log in</a>
+          [[pass]]
         </div>
       </div>
     </nav>
@@ -76,5 +72,9 @@
   <script src="js/axios.min.js"></script>
   <script src="js/vue.js"></script>
   <script src="js/utils.js"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/@petfinder/petfinder-js/dist/petfinder.min.js"></script>
+
   [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
 </html>
