@@ -145,14 +145,17 @@ def get_curr_dogs():
     #   4. make an API call to fill it with 20 new dogs that fufill the prefrences just calculated 
     # 5. pop off #1, and store it as currdog
 
-    pup_id = request.params.get('pup_id')
-    assert pup_id is not None
+    pup_idx = request.params.get('pup_idx')
+    print(pup_idx)
+    # pup_idx = int(pup_idx)
+    assert pup_idx is not None
 
-    # get user's curr_dogs list, and dog in that list with pup_id id
+    # get user's curr_dogs list, and dog in that list with pup_idx id
     user = db(db.dbuser.auth == get_user()).select().first()
-    users_currdogs = db(db.curr_dogs.user_owned == user).select()
-    fished_pup = db( (db.dog.dog_id == pup_id) & (db.dog.list_in in users_currdogs) ).select().first()
-    assert fished_pup is not None
+    currdogs_dog = db((db.curr_dogs.user_owned == user) & (db.curr_dogs.dog_index == pup_idx)).select().first()
+
+    fished_pup = db( (db.dog.list_in == currdogs_dog) ).select().first()
+    # assert fished_pup is not None
 
     return dict(
         dog_id      =fished_pup.dog_id,
