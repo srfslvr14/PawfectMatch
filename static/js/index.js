@@ -45,8 +45,10 @@ let init = (app) => {
 
         //Shingo 5/25 Adding matches into matching database
         //====================================================
+        app.vue.disp_cards_idx--;
         let match = app.vue.pup_cards[app.vue.disp_cards_idx];
-        axios.post(add_match_url, { match: match})i
+        axios.post(add_match_url, { match: match})
+        app.vue.disp_cards_idx++;
         //====================================================
 
         app.vue.disp_cards_idx++;

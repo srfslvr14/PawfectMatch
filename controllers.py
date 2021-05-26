@@ -190,7 +190,7 @@ def get_curr_dogs():
     # 5. pop off #1, and store it as currdog
 
     pup_idx = request.params.get('pup_idx')
-    print(pup_idx)
+    # print(pup_idx)
     # pup_idx = int(pup_idx)
     assert pup_idx is not None
 
