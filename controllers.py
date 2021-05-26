@@ -54,12 +54,34 @@ def index():
         get_user_idx_url = URL('get_user_idx', signer=url_signer),
         set_curr_dogs_url = URL('set_curr_dogs', signer=url_signer),
         get_curr_dogs_url = URL('get_curr_dogs', signer=url_signer),
+        add_match_url = URL('add_match',signer=url_signer),
+        get_curr_matches_url = URL('get_curr_matches',signer=url_signer),
     )
 
 @action('matches', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'matches.html')
 def matches(userID=None):
     return dict()
+
+# Shingo 5/25 
+# ====================================================
+
+
+@action('get_curr_matches', method="GET")
+@action.uses(url_signer.verify(), db, session, auth.user)
+def get_curr_matches():
+    match_id = request.json.get('match_id')
+    pup_id = request.params.get('pup_id')
+    assert pup_id is not None
+
+    # get user's curr_dogs list, and dog in that list with pup_id id
+    user = db(db.dbuser.auth == get_user()).select().first()
+    users_currdogs = db(db.curr_dogs.user_owned == user).select()
+    fished_pup = db((db.dog.dog_id == pup_id) & (
+        db.dog.list_in in users_currdogs)).select().first()
+    assert fished_pup is not None
+    return dict()
+# ====================================================
 
 @action('profile', method="GET")
 @action.uses(db, session, auth.user, 'profile.html')
@@ -77,6 +99,28 @@ def update_idx():
         curr_dog_index = idx
     )
     return "ok"
+
+# Shingo 5/25
+# ====================================================
+@action('add_match', method="POST")
+@action.uses(url_signer.verify(), db, session, auth.user)
+def add_match():
+    match = request.json.get('match')
+    assert match is not None
+    match_id = match["id"]
+    match_photo = match["image"]
+    match_name = match["name"]
+    user = db(db.dbuser.auth == get_user()).select().first()
+    assert user is not None
+    db.recent_matches.insert(
+            user_owned=user,
+            dog_index=match_id,
+            dog_name=match_name,
+            dog_images=match_photo,
+    )
+    matched = db(db.recent_matches.dog_index == match_id)
+    return "ok"
+# ====================================================
 
 @action('get_user_idx', method="GET")
 @action.uses(url_signer.verify(), db, session, auth.user)

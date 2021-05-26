@@ -16,6 +16,7 @@ let init = (app) => {
         disp_cards_idx: 1,
         cur_email: "",
         test_get_api: "",
+        test_add_match: "",
     };
 
     app.enumerate = (a) => {
@@ -44,6 +45,14 @@ let init = (app) => {
 
     app.match = function (){
         console.log("matching\n")
+
+        //Shingo 5/25 Adding matches into matching database
+        //====================================================
+        let match = app.vue.pup_cards[app.vue.disp_cards_idx];
+        axios.post(add_match_url, { match: match})
+        
+        //====================================================
+
         app.vue.disp_cards_idx++;
 
         if (app.vue.disp_cards_idx > 19){
@@ -53,6 +62,7 @@ let init = (app) => {
 
         axios.post(update_idx_url, {disp_cards_idx: app.vue.disp_cards_idx});
         app.init();
+
 
         // post pupcard at disp_cards_idx to recent matches database
         // disp_cards_idx++
@@ -72,7 +82,6 @@ let init = (app) => {
 
         axios.post(update_idx_url, {disp_cards_idx: app.vue.disp_cards_idx});
         app.init();
-
 
         // disp_cards_idx++
             // if disp_cards_idx > 20, disp_cards_idx = 0
