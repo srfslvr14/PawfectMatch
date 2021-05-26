@@ -131,6 +131,8 @@ def set_curr_dogs():
         )
         pup_index = pup_index+1
 
+    # session.sleep(5)
+
     # db(db.curr_dogs.user_owned == user).delete()    
     # db(db.dog).delete()
 

@@ -52,7 +52,9 @@ let init = (app) => {
 
         if (app.vue.disp_cards_idx > 20){
             app.vue.disp_cards_idx = 1;
-            // app.complete(app.data.pup_cards);
+
+            app.data.pup_cards = [];
+            app.enumerate(app.vue.pup_cards);
             app.getNextPupsFromAPI();
         }
 
@@ -67,7 +69,9 @@ let init = (app) => {
 
         if (app.vue.disp_cards_idx > 20){
             app.vue.disp_cards_idx = 1;
-            // app.complete(app.data.pup_cards);
+
+            app.data.pup_cards = [];
+            app.enumerate(app.vue.pup_cards);
             app.getNextPupsFromAPI();
         }
 
