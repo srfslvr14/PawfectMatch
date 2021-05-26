@@ -14,14 +14,8 @@ let init = (app) => {
         disp_cards_idx: 1,
         cur_email: "",
         test_get_api: "",
+        test_add_match: "",
     };
-
-    // app.enumerate = (a) => {
-    //     // This adds an _idx field to each element of the array.
-    //     let k = 1;
-    //     a.map((e) => {e._idx = k++;});
-    //     return a;
-    // };
 
     app.enumerate = (a) => {
         // This adds an _idx field to each element of the array.
@@ -48,6 +42,13 @@ let init = (app) => {
 
     app.match = function (){
         console.log("matching\n")
+
+        //Shingo 5/25 Adding matches into matching database
+        //====================================================
+        let match = app.vue.pup_cards[app.vue.disp_cards_idx];
+        axios.post(add_match_url, { match: match})i
+        //====================================================
+
         app.vue.disp_cards_idx++;
 
         if (app.vue.disp_cards_idx > 20){
@@ -65,7 +66,6 @@ let init = (app) => {
     app.no_match = function (){
         console.log("hating\n")
         app.vue.disp_cards_idx++;
-        console.log(app.vue.disp_cards_idx + "\n");
 
         if (app.vue.disp_cards_idx > 20){
             app.vue.disp_cards_idx = 1;

@@ -1,5 +1,5 @@
 [[extend 'layout.html']]
-<div class="section">
+<div class="section" <!--id="vue-target-matches"--> >
     <!--Contact pop up-->
     <div class="modal" id="contact_modal">
         <div class="modal-background" onclick="show_contact_modal()"></div>
@@ -40,6 +40,31 @@
         <div class=" title has-text-centered" style="color: #985d2d;"><b>My Matches</b></div>
         <br>
         
+        <div class="columns is-multiline" v-for="p in pup_cards">
+          <!-- loop through -->
+          <div class="column is-one-quarter-desktop is-half-tablet">
+            <div class="card">
+              <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
+                <figure class="image is-3by2">
+                  <img src="https://images.fridaymagazine.ae/1_2307490/imagesList_0/2684410059_main.jpg" alt="">
+                </figure>
+              </div>
+              <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
+                <h1>TIMMY</h1>
+              </div>
+              <footer class="card-footer">
+                <a class="card-footer-item" id="tog" onclick="show_contact_modal()">
+                  Contact
+                </a>
+              </footer>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
         <div class="columns is-multiline">
         <!-- loop through -->
             <div class="column is-one-quarter-desktop is-half-tablet">
