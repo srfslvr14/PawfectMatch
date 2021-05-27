@@ -12,6 +12,7 @@ let init = (app) => {
 
 	// This is the Vue data.
 	app.data = {
+		pup_cards: [],
 		match_cards: [],
 		disp_cards_idx: 1,
 		cur_email: "",
