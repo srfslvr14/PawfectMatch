@@ -15,6 +15,7 @@ let init = (app) => {
         cur_email: "",
         test_get_api: "",
         test_add_match: "",
+        api_loading: false,
     };
 
     app.enumerate = (a) => {
@@ -92,6 +93,8 @@ let init = (app) => {
     };
 
     app.getNextPupsFromAPI = async function getNextPupsFromAPI() {
+        app.data.api_loading = true;
+
         console.log("get new bitches \n");
         var client = new petfinder.Client({
             apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE", 
@@ -102,7 +105,7 @@ let init = (app) => {
         console.log(page);
         apiResult = await client.animal.search({
             type: "Dog",
-            breed: "Poodle",
+            breed: "Corgi",
             page,
             limit: 20,
         });
@@ -131,6 +134,7 @@ let init = (app) => {
 
         axios.post(set_curr_dogs_url, {new_pup_cards: app.vue.pup_cards});
         app.init();
+        app.data.api_loading = false;
     }
 
     // We form the dictionary of all methods, so we can assign them

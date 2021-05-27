@@ -167,9 +167,8 @@ def set_curr_dogs():
     # print(new_pup_cards)
 
     # delete the current curr_dogs list owned by the user
-    # TODO DOES NOT DELETE DOGS IN DATABASE, CASCADE NO GO
+    # get user's curr_dogs list, and dog in that list with pup_idx id
     db(db.curr_dogs.user_owned == user).delete()
-    db(db.dog).delete()
 
     pup_index = 1
     for pup in new_pup_cards:
