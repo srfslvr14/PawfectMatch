@@ -12,7 +12,6 @@ let init = (app) => {
 
 	// This is the Vue data.
 	app.data = {
-		pup_cards: [], // dummy varible bc it threw an error without this field? even tho its not refed anywhere
 		match_cards: [],
 		disp_cards_idx: 1,
 		cur_email: "",
@@ -29,6 +28,7 @@ let init = (app) => {
 		potty: "",
 		kid: "",
 		image: "",
+		loading: false,
 	};
 
 	
@@ -44,7 +44,7 @@ let init = (app) => {
 			apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE",
 			secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
 		});
-
+		app.vue.loading = false;
 		client.animal.show(id)
 			.then(resp => {
 				// Do something with resp.data.animal
@@ -56,10 +56,10 @@ let init = (app) => {
 									resp.data.animal.contact.address.state+ " "+
 									resp.data.animal.contact.address.postcode+" " +
 									resp.data.animal.contact.address.country;
+				app.vue.loading = true;
 			});
 		var contact_modal = document.getElementById("contact_modal");
-		contact_modal.classList.toggle('is-active')
-		app.init();
+		contact_modal.classList.toggle('is-active');
 	}
 
 	app.getMatchInfoFromAPI = async function getMatchInfoFromAPI(id) {
@@ -67,7 +67,7 @@ let init = (app) => {
 			apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE",
 			secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
 		});
-
+		app.vue.loading = false;
 		client.animal.show(id)
 			.then(resp => {
 				// Do something with resp.data.animal
@@ -79,10 +79,10 @@ let init = (app) => {
 				app.vue.fur= resp.data.animal.colors.primary;
 				app.vue.potty= resp.data.animal.attributes.house_trained;
 				app.vue.kid= resp.data.animal.environment.children;
+				app.vue.loading = true;
 			});
 		var info_modal = document.getElementById("info_modal");
-		info_modal.classList.toggle('is-active')
-		app.init();
+		info_modal.classList.toggle('is-active');
 	}
 
 	// We form the dictionary of all methods, so we can assign them
