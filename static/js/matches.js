@@ -12,7 +12,7 @@ let init = (app) => {
 
 	// This is the Vue data.
 	app.data = {
-		pup_cards: [],
+		pup_cards: [], // dummy varible bc it threw an error without this field? even tho its not refed anywhere
 		match_cards: [],
 		disp_cards_idx: 1,
 		cur_email: "",
