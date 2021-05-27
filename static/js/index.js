@@ -98,7 +98,8 @@ let init = (app) => {
             secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
         });
 
-        let page = 1;
+        let page = Math.floor(Math.random() * 10)+1; // returns a random integer from 1 to 10
+        console.log(page);
         apiResult = await client.animal.search({
             type: "Dog",
             breed: "Poodle",
