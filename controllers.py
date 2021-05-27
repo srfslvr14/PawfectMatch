@@ -54,12 +54,17 @@ def index():
         get_user_idx_url = URL('get_user_idx', signer=url_signer),
         set_curr_dogs_url = URL('set_curr_dogs', signer=url_signer),
         get_curr_dogs_url = URL('get_curr_dogs', signer=url_signer),
+        add_match_url = URL('add_match',signer=url_signer),
     )
 
 @action('matches', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'matches.html')
 def matches(userID=None):
-    return dict()
+
+    return dict(
+        get_matches_id_url=URL('get_matches_id',signer=url_signer),
+        get_curr_matches_url=URL('get_curr_matches', signer=url_signer),
+    )
 
 @action('profile', method="GET")
 @action.uses(db, session, auth.user, 'profile.html')
@@ -77,6 +82,65 @@ def update_idx():
         curr_dog_index = idx
     )
     return "ok"
+
+# Shingo 5/25
+# ====================================================
+@action('add_match', method="POST")
+@action.uses(url_signer.verify(), db, session, auth.user)
+def add_match():
+    match = request.json.get('match')
+    assert match is not None
+    match_id = match["id"]
+    match_photo = match["image"]
+    match_name = match["name"]
+    user = db(db.dbuser.auth == get_user()).select().first()
+    assert user is not None
+    db.recent_matches.insert(
+            user_owned=user,
+            dog_index=match_id,
+            dog_name=match_name,
+            dog_images=match_photo,
+    )
+    matches = db(db.recent_matches.user_owned == user).select()
+    len = 0
+    for rows in matches:
+        len+=1
+    if len > 10:
+        first_id = matches.first().id
+        db(db.recent_matches.id == first_id).delete()
+    return "ok"
+# ====================================================
+
+# Shingo 5/25 
+# ====================================================
+@action('get_curr_matches', method="GET")
+@action.uses(url_signer.verify(), db, session, auth.user)
+def get_curr_matches():
+    match_id = request.params.get('match_id')
+    assert match_id is not None
+
+    # get user's curr_dogs list, and dog in that list with pup_id id
+    user = db(db.dbuser.auth == get_user()).select().first()
+    fished_pup = db((db.recent_matches.dog_index == match_id)).select().first()
+    assert fished_pup is not None
+    return dict(
+        user_owned=fished_pup.user_owned,
+        dog_index=fished_pup.dog_index,
+        dog_name=fished_pup.dog_name,
+        dog_images=fished_pup.dog_images,
+    )
+
+
+@action('get_matches_id', method="GET")
+@action.uses(url_signer.verify(), db, session, auth.user)
+def get_matches_id():
+    user = db(db.dbuser.auth == get_user()).select().first()
+    matches= db(db.recent_matches.user_owned == user).select()
+    list = []
+    for match in matches:
+        list.append(match.dog_index)
+    return dict(match_ids= list)
+# ====================================================
 
 @action('get_user_idx', method="GET")
 @action.uses(url_signer.verify(), db, session, auth.user)
@@ -131,6 +195,8 @@ def set_curr_dogs():
         )
         pup_index = pup_index+1
 
+    # session.sleep(5)
+
     # db(db.curr_dogs.user_owned == user).delete()    
     # db(db.dog).delete()
 
@@ -146,7 +212,7 @@ def get_curr_dogs():
     # 5. pop off #1, and store it as currdog
 
     pup_idx = request.params.get('pup_idx')
-    print(pup_idx)
+    # print(pup_idx)
     # pup_idx = int(pup_idx)
     assert pup_idx is not None
 

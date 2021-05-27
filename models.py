@@ -73,8 +73,8 @@ db.define_table(
     'recent_matches',
     Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
     Field('dog_index'),
-    Field('dog_payload', 'reference dog', ondelete="CASCADE"),
-    Field('is_matched', 'boolean', default=False),
+    Field('dog_name'),
+    Field('dog_images'),
 )
 
 db.define_table(
