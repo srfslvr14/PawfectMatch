@@ -106,17 +106,17 @@ let init = (app) => {
 	// and then set all their values up, and then set up each cards data
 	// make sure to call get_next_pupcards if needed
 	app.init = () => {
-		console.log("init");
+		console.log("match init");
 		let match_ids = []
 		axios.get(get_matches_id_url)
 			.then(function (response) {
 				match_ids = response.data.match_ids;
 				console.log(match_ids.length)
 				for (var i = 0; i < match_ids.length; i++) {
-					console.log("pup init\n");
+					console.log("match pup init\n");
 					axios.get(get_curr_matches_url, { params: { match_id: match_ids[i] } })
 						.then(function (response) {
-							console.log(response)
+							// console.log(response)
 							let image = response.data.dog_images
 							if(image == "[]"){
 								image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
