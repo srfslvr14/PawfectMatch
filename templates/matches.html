@@ -34,6 +34,22 @@
           </section>
         </div>
     </div>
+    <!-- delete pop up-->
+    <div class="modal" id="delete_modal" v-cloak>
+      <div class="modal-background" onclick="show_delete_modal()"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Delete Match?</p>
+        </header>
+        <section class="modal-card-body">
+          Are you sure you want to delete your match?          
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-danger" @click="delete_match(disp_cards_idx)">Delete</button>
+          <button class="button" onclick="show_delete_modal()">Cancel</button>
+        </footer>
+      </div>
+    </div>
     <!--Info pop up-->
     <div class="modal" id="info_modal">
         <div class="modal-background" onclick="show_info_modal()"></div>
@@ -101,6 +117,9 @@
                 <a class="card-footer-item" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
                   Contact
                 </a>
+                <a class="card-footer-item has-text-danger" id="tog" @click="select_delete_match(match._idx)">
+                    <i class="fa fa-trash fa-lg"></i>
+                </a>
               </footer>
             </div>
           </div>
@@ -111,10 +130,16 @@
 <script>
    let get_matches_id_url = "[[=XML(get_matches_id_url)]]";
    let get_curr_matches_url = "[[=XML(get_curr_matches_url)]]";
+   let delete_match_url = "[[=XML(delete_match_url)]]";
     function show_contact_modal(){
         //console.log("click");
         var contact_modal = document.getElementById("contact_modal");
         contact_modal.classList.toggle('is-active')
+    }
+    function show_delete_modal(match_idx) {
+        //console.log("click");
+        var delete_modal = document.getElementById("delete_modal");
+        delete_modal.classList.toggle('is-active')
     }
 
     function show_info_modal(){
@@ -127,4 +152,4 @@
 <script src="js/sugar.min.js"></script>
 <script src="js/axios.min.js"></script>
 <script src="js/vue.js"></script>
-<script src="js/matches.js"></script>
+<script src="../static/js/matches.js"></script>

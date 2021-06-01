@@ -65,6 +65,7 @@ def matches(userID=None):
     return dict(
         get_matches_id_url=URL('get_matches_id',signer=url_signer),
         get_curr_matches_url=URL('get_curr_matches', signer=url_signer),
+        delete_match_url=URL('delete_match', signer=url_signer),
     )
 
 @action('profile', method="GET")
@@ -84,7 +85,7 @@ def update_idx():
     )
     return "ok"
 
-# Shingo 5/25
+# Shingo 5/25 ->5/30
 # ====================================================
 @action('add_match', method="POST")
 @action.uses(url_signer.verify(), db, session, auth.user)
@@ -110,6 +111,15 @@ def add_match():
         first_id = matches.first().id
         db(db.recent_matches.id == first_id).delete()
     return "ok"
+
+# 5/30
+@action('delete_match')
+@action.uses(url_signer.verify(), db)
+def delete_comment():
+    id = request.params.get('id')
+    assert id is not None
+    db(db.recent_matches.id == id).delete()
+    return "ok"
 # ====================================================
 
 # Shingo 5/25 
@@ -129,6 +139,7 @@ def get_curr_matches():
         dog_index=fished_pup.dog_index,
         dog_name=fished_pup.dog_name,
         dog_images=fished_pup.dog_images,
+        id=fished_pup.id,
     )
 
 
