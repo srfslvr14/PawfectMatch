@@ -1,5 +1,11 @@
 [[extend 'layout.html']]
-<div class="section">
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<div class="section" id="vue-matches" v-cloak>
     <div class="title has-text-centered">
         My Name
     </div>
@@ -25,24 +31,24 @@
         <p class="info_box">Location:</p>
     </div>
 
-<div class="container">
-    <label class="label">multiple select test</label>
-    <p class="control">
-    <select style="width:25%;" multiple>
-        <option value=""></option>
+
+    <div class="container">
+        <label class="label">numbers</label>
+        <p class="control">
+          <select style="width:25%;" multiple>
+            <option value=""></option>
         <option value="1">one</option>
         <option value="2">two</option>
         <option value="3">three</option>
         <option value="4">four</option>
         <option value="5">five</option>
-    </select>
-    </p>
-</div>
+          </select>
+        </p>
+      </div>
 
 </div>
 
 [[block page_scripts]]
 <script src="js/profile_page.js">
-
 </script>
 [[end]]

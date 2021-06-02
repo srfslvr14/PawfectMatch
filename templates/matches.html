@@ -1,7 +1,14 @@
 [[extend 'layout.html']]
-<div class="section">
+
+<style>
+  [v-cloak] {
+    display: none;
+  }
+</style>
+
+<div class="section" id="vue-matches" v-cloak>
     <!--Contact pop up-->
-    <div class="modal" id="contact_modal">
+    <div class="modal" id="contact_modal" v-cloak>
         <div class="modal-background" onclick="show_contact_modal()"></div>
         <div class="modal-card">
           <header class="modal-card-head">
@@ -11,7 +18,16 @@
           <section class="modal-card-body">
             <div class="tile is-info">
                 <span>
-                    Contact info for doggo goes here!
+                    <div>
+                      email: {{email}}
+                    </div>
+                    <div>
+                      number: {{phone}}
+                    </div>
+                    <div>
+                      address: {{address}}
+                    </div>
+                    
                 </span>
             </div>
           </section>
@@ -29,7 +45,33 @@
           <section class="modal-card-body">
             <div class="tile is-info">
                 <span>
-                    Doggo info here!
+                    <div>
+                      url: {{url}}
+                    </div>
+                    <div>
+                      breed: {{breed}}
+                    </div>
+                    <div>
+                      age: {{age}}
+                    </div>
+                    <div>
+                      gender: {{gender}}
+                    </div>
+                    <div>
+                      size: {{size}}
+                    </div>
+                    <div>
+                      fur: {{fur}}
+                    </div>
+                    <div>
+                      potty: {{potty}}
+                    </div>
+                    <div>
+                      kid: {{kid}}
+                    </div>
+                    <div>
+                      image: {{image}}
+                    </div>
                 </span>
             </div>
           </section>
@@ -40,149 +82,55 @@
         <div class=" title has-text-centered" style="color: #985d2d;"><b>My Matches</b></div>
         <br>
         
+        <div class="columns is-multiline" v-for="p in pup_cards">
+          <!-- loop through -->
+          <div class="column is-one-quarter-desktop is-half-tablet">
+            <div class="card">
+              <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
+                <figure class="image is-3by2">
+                  <img src="https://images.fridaymagazine.ae/1_2307490/imagesList_0/2684410059_main.jpg" alt="">
+                </figure>
+              </div>
+              <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
+                <h1>TIMMY</h1>
+              </div>
+              <footer class="card-footer">
+                <a class="card-footer-item" id="tog" onclick="show_contact_modal()">
+                  Contact
+                </a>
+              </footer>
+            </div>
+          </div>
+        </div>
+
+
         <div class="columns is-multiline">
-        <!-- loop through -->
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://images.fridaymagazine.ae/1_2307490/imagesList_0/2684410059_main.jpg" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                    <h1>TIMMY</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" id="tog" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
+          <!-- loop through -->
+          <div class="column is-one-quarter-desktop is-half-tablet" v-for="match in match_cards" >
+            <div class="card">
+              <div class="card-image" @click="getMatchInfoFromAPI(match.dog_index)" style="cursor: pointer;">
+                <figure class="image is-3by2">
+                  <img v-bind:src="match.dog_images" alt="">
+                </figure>
               </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://www.cdc.gov/healthypets/images/pets/angry-dog.jpg" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                      <h1>TEETHY</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" id="tog2" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
+              <div class="content" style="margin: 3%;cursor: pointer;" @click="getMatchInfoFromAPI(match.dog_index)">
+                <h1>{{match.dog_name}}
+                </h1>
               </div>
+              <footer class="card-footer">
+                <a class="card-footer-item" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
+                  Contact
+                </a>
+              </footer>
             </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://vetmed.illinois.edu/wp-content/uploads/2020/03/pc-covid19-faqs.jpg" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                      <h1>NOSEY</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
-              </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://i.pinimg.com/originals/ff/0a/4b/ff0a4b4fd408d604d33bb8772438ac3b.jpg" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                      <h1>SLEEPY</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
-              </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://amazeballsanimals.files.wordpress.com/2015/08/31.png" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                      <h1>BOB</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
-              </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-              <div class="card">
-                  <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                      <figure class="image is-3by2">
-                        <img src="https://cdn.pocket-lint.com/r/s/1200x/assets/images/146846-gadgets-news-omg-we-want-sonys-146846-beagle-like-aibo-bot-dog-image1-pncvobxl5f.jpg" alt="">
-                      </figure>
-                  </div>
-                  <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                      <h1>BEEP BOOP WOOF</h1>
-                  </div>
-                  <footer class="card-footer">
-                      <a class="card-footer-item" onclick="show_contact_modal()">
-                        Contact
-                      </a>
-                  </footer>
-              </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-                <div class="card">
-                    <div class="card-image" onclick="show_info_modal()" style="cursor: pointer;">
-                        <figure class="image is-3by2">
-                          <img src="https://filmdaily.co/wp-content/uploads/2021/02/walter-dog-lede.jpg" alt="">
-                        </figure>
-                    </div>
-                    <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                        <h1>HENLO MY FRAND</h1>
-                    </div>
-                    <footer class="card-footer">
-                        <a class="card-footer-item" onclick="show_contact_modal()">
-                          Contact
-                        </a>
-                    </footer>
-                </div>
-            </div>
-            <div class="column is-one-quarter-desktop is-half-tablet">
-                <div class="card">
-                    <div class="card-image"onclick="show_info_modal()" style="cursor: pointer;">
-                        <figure class="image is-3by2">
-                          <img src="https://nitrocdn.com/jXNuWMTZCEtYTuynxKMqdCUPnHWuYyAs/assets/static/optimized/rev-fb4968a/wp-content/uploads/2019/07/PIXAR-640x459.jpg" alt="">
-                        </figure>
-                    </div>
-                    <div class="content" style="margin: 3%;cursor: pointer;" onclick="show_info_modal()">
-                        <h1>TADASHI HAMADA</h1>
-                    </div>
-                    <footer class="card-footer">
-                        <a class="card-footer-item" onclick="show_contact_modal()">
-                          Contact
-                        </a>
-                    </footer>
-                </div>
-            </div>
+          </div>
         </div>
     </div>
 </div>
 
 <script>
+   let get_matches_id_url = "[[=XML(get_matches_id_url)]]";
+   let get_curr_matches_url = "[[=XML(get_curr_matches_url)]]";
     function show_contact_modal(){
         //console.log("click");
         var contact_modal = document.getElementById("contact_modal");
@@ -195,3 +143,8 @@
         info_modal.classList.toggle('is-active')
     }
 </script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/sugar.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/matches.js"></script>
