@@ -1,4 +1,4 @@
-timestamp: 2021-05-04T14:25:22.859071
+timestamp: 2021-06-03T12:25:59.220932
 CREATE TABLE "py4web_session"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "rkey" CHAR(512),
@@ -8,7 +8,7 @@ CREATE TABLE "py4web_session"(
     "expires_on" TIMESTAMP
 );
 success!
-timestamp: 2021-05-04T14:25:22.861801
+timestamp: 2021-06-03T12:25:59.237108
 CREATE TABLE "auth_user"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "email" CHAR(512) UNIQUE,
@@ -21,83 +21,24 @@ CREATE TABLE "auth_user"(
     "past_passwords_hash" TEXT
 );
 success!
-timestamp: 2021-05-04T14:25:22.863122
+timestamp: 2021-06-03T12:25:59.240047
 CREATE TABLE "auth_user_tag_groups"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "path" CHAR(512),
     "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
 );
 success!
-timestamp: 2021-05-04T14:25:22.963934
-CREATE TABLE "bird"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "bird_name" CHAR(512),
-    "bird_weight" INTEGER,
-    "bird_diet" CHAR(512),
-    "bird_habitat" CHAR(512),
-    "bird_count" INTEGER,
-    "seen_by" CHAR(512)
-);
-success!
-timestamp: 2021-05-06T12:50:47.054963
+timestamp: 2021-06-03T12:25:59.278160
 CREATE TABLE "dbuser"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "auth" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
     "first_name" CHAR(512),
     "last_name" CHAR(512),
     "user_email" CHAR(512),
-    "password" CHAR(512)
+    "curr_dog_index" CHAR(512)
 );
 success!
-timestamp: 2021-05-06T12:50:47.057762
-CREATE TABLE "db_userprefrences"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "breed" CHAR(512),
-    "size" CHAR(512),
-    "fur_color" CHAR(512),
-    "age" CHAR(512),
-    "house_trained" CHAR(512),
-    "kid_safe" CHAR(512),
-    "pet_safe" CHAR(512)
-);
-success!
-timestamp: 2021-05-06T12:51:18.032074
-CREATE TABLE "db_dog"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "dog_id" CHAR(512),
-    "dog_name" CHAR(512),
-    "dog_photo" CHAR(512),
-    "dog_breed" CHAR(512),
-    "dog_age" CHAR(512),
-    "dog_compscore" INTEGER
-);
-success!
-timestamp: 2021-05-06T12:54:08.993655
-CREATE TABLE "db_recent_hist"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  ,
-    "is_matched" CHAR(1)
-);
-success!
-timestamp: 2021-05-06T12:54:27.296009
-CREATE TABLE "db_next_queue"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  
-);
-success!
-timestamp: 2021-05-06T12:54:27.298820
-CREATE TABLE "db_favorites"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "db_dog" ("id") ON DELETE CASCADE  
-);
-success!
-timestamp: 2021-05-06T12:56:14.951236
+timestamp: 2021-06-03T12:25:59.280512
 CREATE TABLE "user_pref"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
@@ -107,609 +48,51 @@ CREATE TABLE "user_pref"(
     "age" CHAR(512),
     "house_trained" CHAR(512),
     "kid_safe" CHAR(512),
-    "pet_safe" CHAR(512)
+    "pet_safe" CHAR(512),
+    "distance" CHAR(512),
+    "location" CHAR(512)
 );
 success!
-timestamp: 2021-05-06T12:56:14.953588
+timestamp: 2021-06-03T12:25:59.282138
+CREATE TABLE "curr_dogs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "dog_index" CHAR(512)
+);
+success!
+timestamp: 2021-06-03T12:25:59.284353
 CREATE TABLE "dog"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "list_in" INTEGER REFERENCES "curr_dogs" ("id") ON DELETE CASCADE  ,
     "dog_id" CHAR(512),
     "dog_name" CHAR(512),
-    "dog_photo" CHAR(512),
     "dog_breed" CHAR(512),
     "dog_age" CHAR(512),
-    "dog_compscore" INTEGER
+    "dog_gender" CHAR(512),
+    "dog_size" CHAR(512),
+    "dog_fur" CHAR(512),
+    "dog_potty" CHAR(512),
+    "dog_kid" CHAR(512),
+    "dog_location" CHAR(512),
+    "dog_url" CHAR(512),
+    "dog_compscore" INTEGER,
+    "dog_photos" CHAR(512)
 );
 success!
-timestamp: 2021-05-06T12:56:14.955376
-CREATE TABLE "recent_hist"(
+timestamp: 2021-06-03T12:25:59.286660
+CREATE TABLE "recent_matches"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ,
-    "is_matched" CHAR(1)
+    "dog_index" CHAR(512),
+    "dog_name" CHAR(512),
+    "dog_images" CHAR(512)
 );
 success!
-timestamp: 2021-05-06T12:56:14.957007
-CREATE TABLE "next_queue"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
-);
-success!
-timestamp: 2021-05-06T12:56:14.958959
+timestamp: 2021-06-03T12:25:59.288483
 CREATE TABLE "favorites"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
     "table_index" CHAR(512),
     "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
 );
-success!
-timestamp: 2021-05-07T18:16:29.935008
-CREATE TABLE "recent_list"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "table_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ,
-    "is_matched" CHAR(1)
-);
-success!
-timestamp: 2021-05-23T14:01:40.922677
-ALTER TABLE "dog" ADD "dog_photos" CHAR(512);
-timestamp: 2021-05-23T14:01:40.926050
-ALTER TABLE "dog" ADD "dog_gender" CHAR(512);
-timestamp: 2021-05-23T14:01:40.927177
-ALTER TABLE "dog" ADD "dog_size" CHAR(512);
-timestamp: 2021-05-23T14:01:40.928563
-ALTER TABLE "dog" ADD "dog_fur" CHAR(512);
-timestamp: 2021-05-23T14:01:40.929679
-ALTER TABLE "dog" ADD "dog_potty" CHAR(512);
-timestamp: 2021-05-23T14:01:40.930668
-ALTER TABLE "dog" ADD "dog_kid" CHAR(512);
-timestamp: 2021-05-23T14:01:40.931769
-ALTER TABLE "dog" ADD "dog_location" CHAR(512);
-timestamp: 2021-05-23T14:01:40.933017
-ALTER TABLE "dog" ADD "dog_url" CHAR(512);
-success!
-success!
-timestamp: 2021-05-23T15:21:17.195543
-ALTER TABLE "dbuser" ADD "curr_dog_index" CHAR(512);
-success!
-success!
-timestamp: 2021-05-23T15:21:17.204445
-CREATE TABLE "curr_dogs"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "user_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
-);
-success!
-timestamp: 2021-05-23T15:21:17.206255
-CREATE TABLE "recent_matches"(
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
-    "dog_index" CHAR(512),
-    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ,
-    "is_matched" CHAR(1)
-);
-success!
-timestamp: 2021-05-23T15:58:08.151326
-ALTER TABLE "dbuser" ADD "auth" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ;
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2021-05-24T00:36:24.363274
-ALTER TABLE "curr_dogs" ADD "dog_index" CHAR(512);
-timestamp: 2021-05-24T00:36:24.364910
-ALTER TABLE "curr_dogs" ADD "dog_payload" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ;
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2021-05-24T01:06:20.638176
-ALTER TABLE "recent_matches" ADD "dog_payload" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  ;
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2021-05-24T12:28:50.349062
-ALTER TABLE "dog" ADD "list_in" INTEGER REFERENCES "curr_dogs" ("id") ON DELETE CASCADE  ;
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2021-05-27T09:45:18.835213
-ALTER TABLE "recent_matches" ADD "dog_name" CHAR(512);
-timestamp: 2021-05-27T09:45:18.837267
-ALTER TABLE "recent_matches" ADD "dog_images" CHAR(512);
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-timestamp: 2021-05-27T11:22:40.160026
-ALTER TABLE "user_pref" ADD "distance" CHAR(512);
-timestamp: 2021-05-27T11:22:40.167038
-ALTER TABLE "user_pref" ADD "location" CHAR(512);
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
-success!
 success!
