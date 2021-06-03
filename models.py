@@ -41,7 +41,6 @@ db.define_table(
     Field('age'),
     Field('house_trained'),
     Field('kid_safe'),
-    Field('pet_safe'),
     Field('distance', requires=IS_INT_IN_RANGE(0,500)),
     Field('location'),
 )

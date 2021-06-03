@@ -139,14 +139,15 @@ let init = (app) => {
 					console.log("match pup init\n");
 					axios.get(get_curr_matches_url, { params: { match_id: match_ids[i] } })
 						.then(function (response) {
+							console.log(response);
 							// console.log(response)
 							let image = response.data.dog_images
-							if(image == "[]"){
-								image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
-							}else{
-								image = image.split(", ");
-								image = image[3].split("'")[3];
-							}
+							// if(image == "[]"){
+							// 	image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+							// }else{
+							// 	image = image.split(", ");
+							// 	image = image[3].split("'")[3];
+							// }
 							app.vue.match_cards.push({
 								_idx: 0,
 								id: response.data.id,

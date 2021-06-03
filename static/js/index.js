@@ -190,6 +190,12 @@ let init = (app) => {
                     pup.location = response.data.dog_location;
                     pup.url = response.data.dog_url;
                     pup.image = response.data.dog_photos;
+                    if(pup.image == "[]"){
+                        pup.image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+                    }else{
+                        pup.image = pup.image.split(", ");
+                        pup.image = pup.image[3].split("'")[3];
+                    }
             });
         }
         // app.enumerate(app.vue.pup_cards);

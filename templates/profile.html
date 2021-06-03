@@ -22,244 +22,235 @@
         <textarea class="textarea" placeholder="Profile Bio"></textarea>
     </div> -->
     <br>
+    
     <div>
-        <strong>
-            <p class="is-size-3-desktop">Set Your Preferences</p>
-        </strong>
-        <br>
+        <button class="button is-primary" v-if="is_hidden" @click="set_add_status(true); set_is_hidden(false);" >
+            <i class="fa fa-plus fa-fw"></i>
+            <p>Edit Preferences</p>
+        </button>
     </div>
-
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Breed</label>
+    
+    <div class="section" v-if="set_mode">
+        <div>
+            <strong>
+                <p class="is-size-3-desktop">Set Your Preferences</p>
+            </strong>
+            <br>
         </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select>
-                            <!-- default preference -->
-                            <option>No Preference</option>
+        <div class="form">
+            <!-- breed -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Breed</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <!-- default preference -->
+                                    <option>No Preference</option>
 
-                            <!-- loop through colors -->
-                            [[for b in breed_list:]]
-                            <option>[[=b]] </option>
-                            [[pass]]
-                        </select>
+                                    <!-- loop through colors -->
+                                    [[for b in breed_list:]]
+                                    <option>[[=b]] </option>
+                                    [[pass]]
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- age -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Age</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <option>No Preference</option>
+                                    <option>Baby</option>
+                                    <option>Young</option>
+                                    <option>Adult</option>
+                                    <option>Senior</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- size -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Size</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <option>No Preference</option>
+                                    <option>Small</option>
+                                    <option>Medium</option>
+                                    <option>Large</option>
+                                    <option>Extra-Large</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- fur color -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Fur Color</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select>
+                                    <!-- default preference -->
+                                    <option>No Preference</option>
+
+                                    <!-- loop through colors -->
+                                    [[for c in colors_list:]]
+                                    <option>[[=c]] </option>
+                                    [[pass]]
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- gender -->
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label">Gender</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                Male
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                Female
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                No Preference
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- potty trained -->
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label">Potty Trained?</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                No
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                No Preference
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- kid -->
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label">Kid Safe</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-narrow">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                No
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="gender">
+                                No Preference
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- location -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Location</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <input class="input" type="text" placeholder="Distance">
+                        </p>
+                        <p class="help">Enter your zip code</p>
+                    </div>
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <!-- input goes here and implment zip code validator -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <!-- submit button -->
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <!-- Left empty for spacing -->
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input type="submit" @click="set_pref" value="Save Preferences" class="button is-primary">
+                            <input type="submit" @click="set_add_status(false); set_is_hidden(true);" value="Cancel" class="button is-warning">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Age</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select>
-                            <option>No Preference</option>
-                            <option>Baby</option>
-                            <option>Young</option>
-                            <option>Adult</option>
-                            <option>Senior</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Size</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select>
-                            <option>No Preference</option>
-                            <option>Small</option>
-                            <option>Medium</option>
-                            <option>Large</option>
-                            <option>Extra-Large</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Fur Color</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select>
-                            <!-- default preference -->
-                            <option>No Preference</option>
-
-                            <!-- loop through colors -->
-                            [[for c in colors_list:]]
-                            <option>[[=c]] </option>
-                            [[pass]]
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label">
-            <label class="label">Gender</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        Male
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        Female
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        No Preference
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label">
-            <label class="label">Potty Trained?</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        Yes
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        No
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        No Preference
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label">
-            <label class="label">Kid Safe</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        Yes
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        No
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="gender">
-                        No Preference
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Location</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <div class="select is-fullwidth">
-                        <select>
-                            <option>No Preference</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Distance</label>
-        </div>
-        <div class="field-body">
-            <div class="field is-narrow">
-                <div class="control">
-                    <input class="input" type="text" placeholder="distance input">
-                </div>
-                <p class="help">Enter a distance 0 - 500 miles from your location</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Distance & Location</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-                <input class="input" type="text" placeholder="Distance">
-            </p>
-            <p class="help">Enter a distance 0 - 500 miles from your location</p>
-          </div>
-          <div class="field">
-            <p class="control is-expanded">
-              <!-- input goes here and implment zip code validator -->
-            </p>
-          </div>
-        </div>
-      </div>
-
-    <br>
-    <div class="field is-horizontal">
-        <div class="field-label">
-            <!-- Left empty for spacing -->
-        </div>
-        <div class="field-body">
-            <div class="field">
-                <div class="control">
-                    <button class="button is-primary">
-                        Save Preferences
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 
 [[block page_scripts]]
+<script>
+    let set_pref_url = "[[=XML(set_pref_url)]]";
+</script>
 <script src="js/profile_page.js"></script>
-<script src="js/selectize.js"></script>
+<!-- <script src="js/selectize.js"></script> this is for multiple select -->
 [[end]]
