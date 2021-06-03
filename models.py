@@ -7,6 +7,9 @@ from .common import db, Field, auth, T
 from pydal.validators import *
 
 
+def get_user():
+    return auth.current_user.get("id") if auth.current_user else None
+
 def get_user_email():
     return auth.current_user.get('email') if auth.current_user else None
 
@@ -22,10 +25,11 @@ def get_time():
 
 db.define_table(
     'dbuser',
+    Field('auth', 'reference auth_user', ondelete="CASCADE"),
     Field('first_name', requires=IS_NOT_EMPTY()),
     Field('last_name', requires=IS_NOT_EMPTY()),
     Field('user_email', default=get_user_email ),
-    Field('password', requires=IS_NOT_EMPTY()),
+    Field('curr_dog_index', default=1),
 )
 
 db.define_table(
@@ -41,29 +45,36 @@ db.define_table(
 )
 
 db.define_table(
+    'curr_dogs',
+    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
+    Field('dog_index'),
+    # Field('dog_payload', 'reference dog', ondelete="CASCADE"),
+)
+
+db.define_table(
     'dog',
+    Field('list_in', 'reference curr_dogs', ondelete="CASCADE"),
     Field('dog_id', requires=IS_NOT_EMPTY()),
     Field('dog_name'),
-    Field('dog_photo'),
     Field('dog_breed'),
     Field('dog_age'),
+    Field('dog_gender'),
+    Field('dog_size'),
+    Field('dog_fur'),
+    Field('dog_potty'),
+    Field('dog_kid'),
+    Field('dog_location'),
+    Field('dog_url'),
     Field('dog_compscore', 'integer', default=0, requires=IS_INT_IN_RANGE(0,10)),
-)
-
-
-db.define_table(
-    'recent_list',
-    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
-    Field('table_index'),
-    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
-    Field('is_matched', 'boolean', default=False),
+    Field('dog_photos'),
 )
 
 db.define_table(
-    'next_queue',
+    'recent_matches',
     Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
-    Field('table_index'),
-    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
+    Field('dog_index'),
+    Field('dog_name'),
+    Field('dog_images'),
 )
 
 db.define_table(
