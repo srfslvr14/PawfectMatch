@@ -106,7 +106,27 @@ def profile(userID=None):
     return dict(
         breed_list = breed_list,
         colors_list = colors_list,
+        set_pref_url = URL('set_pref', signer=url_signer),
     )
+
+@action('set_pref', method="POST")
+@action.uses(url_signer.verify(), db)
+def set_pref():
+    #  get user
+    user = db(db.dbuser.auth == get_user()).select().first()
+    assert user is not None
+    # grab pref from js
+    id = db.user_pref.update(
+        breed = request.json.get('breed'),
+        size = request.json.get('size'),
+        fur_color = request.json.get('fur'),
+        age = request.json.get('age'),
+        house_trained = request.json.get('potty'),
+        kid_safe = request.json.get('kid'),
+        # location = request.json.get('location'),
+    )
+    return dict(id=id)
+
 
 @action('update_idx', method="POST")
 @action.uses(url_signer.verify(), db, session, auth.user)
