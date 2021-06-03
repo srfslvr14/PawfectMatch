@@ -64,6 +64,7 @@ db.define_table(
     Field('dog_potty'),
     Field('dog_kid'),
     Field('dog_location'),
+    Field('dog_desc'),
     Field('dog_url'),
     Field('dog_compscore', 'integer', default=0, requires=IS_INT_IN_RANGE(0,10)),
     Field('dog_photos'),
@@ -77,12 +78,6 @@ db.define_table(
     Field('dog_images'),
 )
 
-db.define_table(
-    'favorites',
-    Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
-    Field('table_index'),
-    Field('payload_dog', 'reference dog', ondelete="CASCADE"),
-)
 
 db.dbuser.id.readable = False
 db.dbuser.id.writable = False

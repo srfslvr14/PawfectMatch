@@ -12,11 +12,9 @@ let init = (app) => {
 
 	// This is the Vue data.
 	app.data = {
-		pup_cards: [], // dummy varible bc it threw an error without this field? even tho its not refed anywhere
 		match_cards: [],
 		disp_cards_idx: 1,
 		cur_email: "",
-		test_get_api: "",
 		email: "",
 		phone: "",
 		address: "",
@@ -29,14 +27,14 @@ let init = (app) => {
 		potty: "",
 		kid: "",
 		image: "",
+		loading: false,
 	};
 
 	
-	app.enumerate = (pup_cards) => {
+	app.enumerate = (a) => {
 		let k = 0;
-		pup_cards.map((pup) => {
-			pup._idx = k++;
-		});
+		a.map((e) => { e._idx = k++;});
+		return a;
 	};
 
 	app.getMatchContactFromAPI = async function getMatchContactFromAPI(id) {
@@ -44,7 +42,7 @@ let init = (app) => {
 			apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE",
 			secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
 		});
-
+		app.vue.loading = false;
 		client.animal.show(id)
 			.then(resp => {
 				// Do something with resp.data.animal
@@ -56,18 +54,40 @@ let init = (app) => {
 									resp.data.animal.contact.address.state+ " "+
 									resp.data.animal.contact.address.postcode+" " +
 									resp.data.animal.contact.address.country;
+				app.vue.loading = true;
 			});
 		var contact_modal = document.getElementById("contact_modal");
-		contact_modal.classList.toggle('is-active')
-		app.init();
+		contact_modal.classList.toggle('is-active');
 	}
+
+	app.delete_match = function (row_idx) {
+		let id = app.vue.match_cards[row_idx].id;
+		console.log(id)
+		axios.get(delete_match_url, { params: { id: id } }).then(function (response) {
+			for (let i = 0; i < app.vue.match_cards.length; i++) {
+				if (app.vue.match_cards[i].id === id) {
+					app.vue.match_cards.splice(i, 1);
+					app.enumerate(app.vue.match_cards);
+					break;
+				}
+			}
+		});
+		var delete_modal = document.getElementById("delete_modal");
+		delete_modal.classList.toggle('is-active');
+	};
+
+	app.select_delete_match = function (row_idx) {
+		app.vue.disp_cards_idx = row_idx;
+		var delete_modal = document.getElementById("delete_modal");
+		delete_modal.classList.toggle('is-active');
+	};
 
 	app.getMatchInfoFromAPI = async function getMatchInfoFromAPI(id) {
 		var client = new petfinder.Client({
 			apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE",
 			secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
 		});
-
+		app.vue.loading = false;
 		client.animal.show(id)
 			.then(resp => {
 				// Do something with resp.data.animal
@@ -79,10 +99,10 @@ let init = (app) => {
 				app.vue.fur= resp.data.animal.colors.primary;
 				app.vue.potty= resp.data.animal.attributes.house_trained;
 				app.vue.kid= resp.data.animal.environment.children;
+				app.vue.loading = true;
 			});
 		var info_modal = document.getElementById("info_modal");
-		info_modal.classList.toggle('is-active')
-		app.init();
+		info_modal.classList.toggle('is-active');
 	}
 
 	// We form the dictionary of all methods, so we can assign them
@@ -91,6 +111,8 @@ let init = (app) => {
 		enumerate: app.enumerate,
 		getMatchContactFromAPI: app.getMatchContactFromAPI,
 		getMatchInfoFromAPI: app.getMatchInfoFromAPI,
+		delete_match: app.delete_match,
+		select_delete_match: app.select_delete_match,
 	};
 
 	// This creates the Vue instance.
@@ -112,6 +134,7 @@ let init = (app) => {
 			.then(function (response) {
 				match_ids = response.data.match_ids;
 				console.log(match_ids.length)
+				app.vue.match_cards = [];
 				for (var i = 0; i < match_ids.length; i++) {
 					console.log("match pup init\n");
 					axios.get(get_curr_matches_url, { params: { match_id: match_ids[i] } })
@@ -125,16 +148,19 @@ let init = (app) => {
 								image = image[3].split("'")[3];
 							}
 							app.vue.match_cards.push({
+								_idx: 0,
+								id: response.data.id,
 								user_owned: response.data.user_owned,
 								dog_index: response.data.dog_index,
 								dog_name: response.data.dog_name,
 								dog_images: image,
 							})
+							app.enumerate(app.vue.match_cards);
 						});
+						
 				}
 			});
-		
-	app.enumerate(app.vue.match_cards);
+					
 	};
 
 

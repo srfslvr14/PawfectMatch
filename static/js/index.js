@@ -35,6 +35,7 @@ let init = (app) => {
                 potty: false,
                 kid: false,
                 location: "",
+                desc: "",
                 url: ""
             });
         }
@@ -87,11 +88,6 @@ let init = (app) => {
         app.getNextPupsFromAPI();
     };
 
-    app.get_init = function (){
-        console.log("init\n")
-        app.init();
-    };
-
     app.getNextPupsFromAPI = async function getNextPupsFromAPI() {
         app.data.api_loading = true;
 
@@ -127,6 +123,7 @@ let init = (app) => {
                 fur: animal.colors.primary,
                 potty: animal.attributes.house_trained,
                 kid: animal.environment.children,
+                desc: animal.description,
                 image: animal.photos,
                 location: "",
             });
@@ -145,7 +142,7 @@ let init = (app) => {
         match: app.match,
         no_match: app.no_match,
         // get_next_pupcards: app.get_next_pupcards,
-        get_init: app.get_init,
+        // get_init: app.get_init,
         get_test: app.get_test,
         getNextPupsFromAPI: app.getNextPupsFromAPI,
     };
@@ -188,8 +185,17 @@ let init = (app) => {
                     pup.potty = response.data.dog_potty;
                     pup.kid = response.data.dog_kid;
                     pup.location = response.data.dog_location;
+                    pup.desc = response.data.dog_desc;
                     pup.url = response.data.dog_url;
                     pup.image = response.data.dog_photos;
+
+                    if(pup.image == "[]"){
+                        pup.image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+                    }
+                    else{
+                        pup.image = pup.image.split(", ");
+                        pup.image = pup.image[3].split("'")[3];
+                    }
             });
         }
         // app.enumerate(app.vue.pup_cards);

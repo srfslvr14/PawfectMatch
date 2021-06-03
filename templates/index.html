@@ -33,20 +33,28 @@
         <br>
         <div v-for="p in pup_cards">
             <div v-if="disp_cards_idx == p._idx" class="box notification">
-                Index: {{p._idx}} <br>
-                Id: {{p.id}} <br>
-                Name: {{p.name}} <br>
-                Breed: {{p.breed}}<br>
-                Age: {{p.age}}<br>
-                Gender: {{p.gender}}<br>
-                Size: {{p.size}}<br>
-                Fur: {{p.fur}}<br>
-                Potty Trained: {{p.potty}}<br>
-                Kid Friendly: {{p.kid}}<br>
-                Location: {{p.location}}<br>
-                Url: {{p.url}}<br>
-                <!-- <img src="{{p.image[0]}}" alt="Dog"> -->
-                <!-- Image: {{p.image[1]}}<br> -->
+                <p> Index: {{p._idx}}  </p>
+                <p> Id: {{p.id}}  </p>
+                <p> Name: {{p.name}}  </p>
+                <p> desc: {{p.desc}}  </p>
+                <p> Breed: {{p.breed}}  </p>
+                <p> Age: {{p.age}}  </p>
+                <p> Gender: {{p.gender}}  </p>
+                <p> Size: {{p.size}}  </p>
+                <p> Fur: {{p.fur}}  </p>
+                <p v-if="p.potty == 'True'"> Potty Trained! </p>
+                <p v-if="p.kid == 'True'"> Kid Friendly! </p>
+
+                <p> Location: {{p.location}}  </p>
+                <p> Url: {{p.url}} </p> 
+                <br>
+                {{p.image}} <br>
+
+                <figure class="image">
+                    <img v-bind:src="p.image" alt="">
+                  </figure>
+
+                <!-- <img src="{{p.image}}" />  -->
             </div>
         </div>
     </div>
