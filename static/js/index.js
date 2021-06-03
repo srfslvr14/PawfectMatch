@@ -42,7 +42,7 @@ let init = (app) => {
     };
 
     app.match = function (){
-        console.log("matching\n")
+
 
         //Shingo 5/25 Adding matches into matching database
         //====================================================
@@ -67,7 +67,6 @@ let init = (app) => {
     };
 
     app.no_match = function (){
-        console.log("hating\n")
         app.vue.disp_cards_idx++;
 
         if (app.vue.disp_cards_idx > 20){
@@ -86,12 +85,7 @@ let init = (app) => {
         console.log("get_test\n")
         app.getNextPupsFromAPI();
     };
-
-    app.get_init = function (){
-        console.log("init\n")
-        app.init();
-    };
-
+    
     app.getNextPupsFromAPI = async function getNextPupsFromAPI() {
         app.data.api_loading = true;
 
@@ -145,7 +139,6 @@ let init = (app) => {
         match: app.match,
         no_match: app.no_match,
         // get_next_pupcards: app.get_next_pupcards,
-        get_init: app.get_init,
         get_test: app.get_test,
         getNextPupsFromAPI: app.getNextPupsFromAPI,
     };
@@ -163,10 +156,8 @@ let init = (app) => {
     // and then set all their values up, and then set up each cards data
     // make sure to call get_next_pupcards if needed
     app.init = () => {
-        console.log("init");
         axios.get(get_user_idx_url)
             .then(function (response) {
-                console.log("idx init");
                 app.vue.disp_cards_idx = response.data.user_index;
             });
 

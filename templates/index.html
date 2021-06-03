@@ -11,12 +11,12 @@
         Start Swiping
     </div>
     
-    <a id="dislike_button" class="button is-info" @click="no_match()">
+    <!-- <a id="dislike_button" class="button is-info" @click="no_match()">
         <i class="fa fa-times"></i>&nbsp; No Match!
     </a>
     <a id="like_button" class="button is-danger" @click="match()">
         <i class="fa fa-heart"></i>&nbsp; Match!
-    </a>
+    </a> -->
 
     <a id="API_button" class="button is-success" @click="get_test()">
         <i class="fa fa-paw"></i>&nbsp; API TEST!
@@ -27,65 +27,66 @@
     <!-- <a id="init_button" class="button is-warning" @click="get_init()">
         <i class="fa fa-paw"></i>&nbsp; INIT!
     </a> -->
+    <div class="columns"> 
+        <div class="column is-1">
+            <a id="dislike_button" class="button is-info" @click="no_match()">
+                <i class="fa fa-times"></i>&nbsp; No Match!
+            </a>
+        </div>
+        <div class="column is-10" style="padding-left: 50px;">
+            <!-- CURRENT PUP CARD DISPLAYED -->
+            <div v-if="!api_loading" class="container block">
+                <br>
+                <div v-for="p in pup_cards">
+                    <div v-if="disp_cards_idx == p._idx" class="box notification">
+                        <strong><p class="is-size-1-desktop">{{p.name}}</p></strong>
+                        <div class="columns">
+                            <div class="column is-two-thirds">
+                                <div class="box notification">
+                                    <figure class="image">
+                                        <img style="max-height: 600px;" v-bind:src="p.image" alt="photto">
+                                    </figure>
+                                </div>
+                            </div>
 
-    <!-- CURRENT PUP CARD DISPLAYED -->
-    <div v-if="!api_loading" class="container block">
-        <br>
-        <div v-for="p in pup_cards">
-            <div v-if="disp_cards_idx == p._idx" class="box notification">
-                Index: {{p._idx}} <br>
-                Id: {{p.id}} <br>
-                Name: {{p.name}} <br>
-                Breed: {{p.breed}}<br>
-                Age: {{p.age}}<br>
-                Gender: {{p.gender}}<br>
-                Size: {{p.size}}<br>
-                Fur: {{p.fur}}<br>
-                Potty Trained: {{p.potty}}<br>
-                Kid Friendly: {{p.kid}}<br>
-                Location: {{p.location}}<br>
-                Url: {{p.url}}<br>
+                            <div class="column is-one-third">
+                                <!-- <p class="info_box"> Index: {{p._idx}} </p> -->
 
-                <figure class="image">
-                    <img v-bind:src="p.image" alt="photto">
-                </figure>
-                <!-- <img src="{{p.image[0]}}" alt="Dog"> -->
-                <!-- Image: {{p.image[1]}}<br> -->
+                                <p class="info_box subtitle"> Breed: {{p.breed}} </p>
+                                <p class="info_box subtitle"> Gender: {{p.gender}} </p>
+                                <p class="info_box subtitle"> Age: {{p.age}} </p>
+            
+                                <p class="info_box subtitle"> Size: {{p.size}} </p>
+                                <p class="info_box subtitle"> Fur: {{p.fur}} </p>
+
+                                <p class="info_box subtitle"> Potty Trained: {{p.potty}} </p>
+                                <p class="info_box subtitle"> Kid Friendly: {{p.kid}} </p>
+
+                                <p class="info_box"> Distance: {{p.location}} </p>
+                                <!-- <p class="info_box"> Url: {{p.url}} </p> -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div v-if="api_loading" class="container block">
-        <br>
-        <div>
-            loading more doggos... <br>
-            <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
-            <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
-        </div>
-    </div>
-
-<!-- 
-    <div class="columns">
-        <div class="column is-two-thirds">
-            <figure class="image is-3by2">
-                <img class="" src="https://lanecdr.org/wp-content/uploads/2019/08/placeholder.png">
-            </figure>
-        </div>
-        <div class="column is-one-third">
-            <div class="box">
-                <strong><p class="is-size-3-desktop has-text-centered">Information</p></strong>
-                <p class="info_box">Breed:</p>
-                <p class="info_box">Age:</p>
-                <p class="info_box">Gender:</p>
-                <p class="info_box">Size:</p>
-                <p class="info_box">Fur Color:</p>
-                <p class="info_box">Potty Trained:</p>
-                <p class="info_box">Kid Safe:</p>
-                <p class="info_box">Location:</p>
+            <div v-if="api_loading" class="container block">
+                <br>
+                <div>
+                    loading more doggos... <br>
+                    <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
+                    <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+                </div>
             </div>
-        </div>
-    </div> -->
 
-    <strong><p class="is-size-1-desktop">DOGGO NAME</p></strong>
+        </div>
+        <div class="column is-1">
+            <a id="like_button" class="button is-danger" @click="match()">
+                <i class="fa fa-heart"></i>&nbsp; Match!
+            </a>
+        </div>
+        
+    </div>
 </div>
 
 <script>
