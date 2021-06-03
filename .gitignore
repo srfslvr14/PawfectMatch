@@ -7,5 +7,5 @@
 /__pycache__
 
 # misc
-/private
-private/*
+#/private
+#private/*
