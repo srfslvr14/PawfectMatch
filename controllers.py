@@ -31,6 +31,11 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from .models import get_user_email, get_user
 from py4web.utils.form import Form, FormStyleBulma
+import yatl 
+import json
+from .settings import APP_FOLDER
+import os
+BREED_JSON_FILE = os.path.join(APP_FOLDER, "data", "breeds.json")
 
 url_signer = URLSigner(session)
 
@@ -65,12 +70,43 @@ def matches(userID=None):
     return dict(
         get_matches_id_url=URL('get_matches_id',signer=url_signer),
         get_curr_matches_url=URL('get_curr_matches', signer=url_signer),
+        delete_match_url=URL('delete_match', signer=url_signer),
     )
 
 @action('profile', method="GET")
 @action.uses(db, session, auth.user, 'profile.html')
 def profile(userID=None):
-    return dict()
+    # open json files and get list of preference options
+    breed_f = open(BREED_JSON_FILE)
+    breeds_json = json.load(breed_f)
+
+    # loop though json file load name component into array 
+    breed_list = []
+    list = breeds_json["breeds"]
+    for breed in list:
+        breed_list.append(breed["name"])
+    # print(breed_list)
+    
+    colors_list = ["Apricot / Beige",
+            "Bicolor",
+            "Black",
+            "Brindle",
+            "Brown / Chocolate",
+            "Golden",
+            "Gray / Blue / Silver",
+            "Harlequin",
+            "Merle (Blue)",
+            "Merle (Red)",
+            "Red / Chestnut / Orange",
+            "Sable",
+            "Tricolor (Brown, Black, & White)",
+            "White / Cream",
+            "Yellow / Tan / Blond / Fawn"]
+
+    return dict(
+        breed_list = breed_list,
+        colors_list = colors_list,
+    )
 
 @action('update_idx', method="POST")
 @action.uses(url_signer.verify(), db, session, auth.user)
@@ -84,7 +120,7 @@ def update_idx():
     )
     return "ok"
 
-# Shingo 5/25
+# Shingo 5/25 ->5/30
 # ====================================================
 @action('add_match', method="POST")
 @action.uses(url_signer.verify(), db, session, auth.user)
@@ -110,6 +146,15 @@ def add_match():
         first_id = matches.first().id
         db(db.recent_matches.id == first_id).delete()
     return "ok"
+
+# 5/30
+@action('delete_match')
+@action.uses(url_signer.verify(), db)
+def delete_comment():
+    id = request.params.get('id')
+    assert id is not None
+    db(db.recent_matches.id == id).delete()
+    return "ok"
 # ====================================================
 
 # Shingo 5/25 
@@ -129,6 +174,7 @@ def get_curr_matches():
         dog_index=fished_pup.dog_index,
         dog_name=fished_pup.dog_name,
         dog_images=fished_pup.dog_images,
+        id=fished_pup.id,
     )
 
 
@@ -167,9 +213,8 @@ def set_curr_dogs():
     # print(new_pup_cards)
 
     # delete the current curr_dogs list owned by the user
-    # TODO DOES NOT DELETE DOGS IN DATABASE, CASCADE NO GO
+    # get user's curr_dogs list, and dog in that list with pup_idx id
     db(db.curr_dogs.user_owned == user).delete()
-    db(db.dog).delete()
 
     pup_index = 1
     for pup in new_pup_cards:

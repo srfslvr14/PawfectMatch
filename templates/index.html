@@ -29,7 +29,7 @@
     </a> -->
 
     <!-- CURRENT PUP CARD DISPLAYED -->
-    <div class="container block">
+    <div v-if="!api_loading" class="container block">
         <br>
         <div v-for="p in pup_cards">
             <div v-if="disp_cards_idx == p._idx" class="box notification">
@@ -48,6 +48,14 @@
                 <!-- <img src="{{p.image[0]}}" alt="Dog"> -->
                 <!-- Image: {{p.image[1]}}<br> -->
             </div>
+        </div>
+    </div>
+    <div v-if="api_loading" class="container block">
+        <br>
+        <div>
+            loading more doggos... <br>
+            <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
+            <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
         </div>
     </div>
 

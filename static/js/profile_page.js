@@ -38,11 +38,12 @@ let init = (app) => {
 	// to the Vue app in a single blow.
 	app.methods = {
 		// enumerate: app.enumerate,
+		
 	};
 
 	// This creates the Vue instance.
 	app.vue = new Vue({
-		el: "#vue-matches",
+		el: "#vue-profile",
 		data: app.data,
 		methods: app.methods,
 	});
