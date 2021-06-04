@@ -14,9 +14,6 @@ let init = (app) => {
 	app.data = {
 		set_mode: false,
 		is_hidden: true,
-		cur_email: "",
-		email: "",
-		phone: "",
 		breed: "",
 		age: "",
 		size: "",
@@ -24,13 +21,7 @@ let init = (app) => {
 		gender: "",
 		potty: "",
 		kid: "",
-		// location: "",
-	};
-
-	app.enumerate = (a) => {
-		let k = 0;
-		a.map((e) => {e._idx = k++;});
-		return a;
+		location: "",
 	};
 
     app.set_pref = function () {
@@ -43,10 +34,27 @@ let init = (app) => {
 				gender: app.vue.gender,
 				potty: app.vue.potty,
 				kid: app.vue.kid,
-				// location: app.vue.location,
-            }).then(function (response) {
-            app.vue.rows.push({
-                id: response.data.id,
+				location: app.vue.location,
+            });
+
+            // app.reset_form();
+            app.set_add_status(false);
+            app.set_is_hidden(true);
+            app.init();
+    };
+
+	app.reset_form = function () {
+		app.vue.breed = "";
+		app.vue.age = "";
+		app.vue.size = "";
+		app.vue.fur = "";
+		app.vue.gender = "";
+		app.vue.potty = "";
+		app.vue.kid = "";
+		app.vue.location = "";
+
+		axios.post(set_pref_url,
+        	{
                 breed: app.vue.breed,
 				age: app.vue.age,
 				size: app.vue.size,
@@ -54,13 +62,13 @@ let init = (app) => {
 				gender: app.vue.gender,
 				potty: app.vue.potty,
 				kid: app.vue.kid,
+				location: app.vue.location,
             });
-            // app.reset_form();
-            app.set_add_status(false);
-            app.set_is_hidden(true);
-            app.init();
-        });
-    };
+    };  
+
+	app.cancel_changes = function (){
+		app.init();
+	};
 
 	app.set_add_status = function (new_status) {
         app.vue.set_mode = new_status;
@@ -70,27 +78,14 @@ let init = (app) => {
         app.vue.is_hidden = new_status;
     };
 
-	// app.reset_form = function () {
-    //     app.vue.set_mode = false;
-	// 	app.vue.is_hidden = true;
-	// 	app.vue.breed = "";
-	// 	app.vue.age = "";
-	// 	app.vue.size = "";
-	// 	app.vue.fur = "";
-	// 	app.vue.gender = "";
-	// 	app.vue.potty = "";
-	// 	app.vue.kid = "";
-	// 	app.vue.location = "";
-    // };  
-
 	// We form the dictionary of all methods, so we can assign them
 	// to the Vue app in a single blow.
 	app.methods = {
-		enumerate: app.enumerate,
 		set_pref: app.set_pref,
 		set_add_status: app.set_add_status,
 		set_is_hidden: app.set_is_hidden,
-		// reset_form: app.reset_form,
+		reset_form: app.reset_form,
+		cancel_changes: app.cancel_changes,
 	};
 
 	// This creates the Vue instance.
@@ -103,8 +98,21 @@ let init = (app) => {
 
 	// And this initializes it.
 	app.init = () => {
-		console.log("init");
-		// axios.get(_______).then(function(response){});
+		// console.log("pup init" + pup._idx);
+		axios.get(get_pref_url)
+			.then(function (response) {
+				// app.vue.breed = response.data.breed;
+				response.data.breed 	? app.vue.breed 	= response.data.breed 	: app.vue.breed = "";
+				response.data.age 		? app.vue.age 		= response.data.age 	: app.vue.age = "";
+				response.data.size 		? app.vue.size 		= response.data.size 	: app.vue.size = "";
+				response.data.fur 		? app.vue.fur 		= response.data.fur 	: app.vue.fur = "";
+				response.data.gender 	? app.vue.gender 	= response.data.gender 	: app.vue.gender = "";
+				response.data.potty 	? app.vue.potty 	= response.data.potty 	: app.vue.potty = "";
+				response.data.kid 		? app.vue.kid 		= response.data.kid 	: app.vue.kid = "";
+				response.data.location 	? app.vue.location 	= response.data.location: app.vue.location = "";
+		});
+		
+ 
 	};
 
 
