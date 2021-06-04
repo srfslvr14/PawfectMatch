@@ -114,8 +114,11 @@
                 </h1>
               </div>
               <footer class="card-footer">
+                <a class="card-footer-item has-text-primary" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
+                  <i class="fa fa-phone fa-lg"></i>
+              </a>
                 <a class="card-footer-item has-text-danger" id="tog" @click="select_delete_match(match._idx)">
-                    <i class="fa fa-trash fa-lg"></i>
+                  <i class="fa fa-trash fa-lg"></i>
                 </a>
               </footer>
             </div>
@@ -128,6 +131,7 @@
    let get_matches_id_url = "[[=XML(get_matches_id_url)]]";
    let get_curr_matches_url = "[[=XML(get_curr_matches_url)]]";
    let delete_match_url = "[[=XML(delete_match_url)]]";
+
     function show_contact_modal(){
         //console.log("click");
         var contact_modal = document.getElementById("contact_modal");

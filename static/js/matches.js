@@ -18,6 +18,7 @@ let init = (app) => {
 		email: "",
 		phone: "",
 		address: "",
+
 		url: "",
 		breed: "",
 		age: "",
@@ -61,6 +62,7 @@ let init = (app) => {
 	}
 
 	app.delete_match = function (row_idx) {
+		console.log(row_idx)
 		let id = app.vue.match_cards[row_idx].id;
 		console.log(id)
 		axios.get(delete_match_url, { params: { id: id } }).then(function (response) {
@@ -142,12 +144,7 @@ let init = (app) => {
 							console.log(response);
 							// console.log(response)
 							let image = response.data.dog_images
-							// if(image == "[]"){
-							// 	image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
-							// }else{
-							// 	image = image.split(", ");
-							// 	image = image[3].split("'")[3];
-							// }
+		
 							app.vue.match_cards.push({
 								_idx: 0,
 								id: response.data.id,

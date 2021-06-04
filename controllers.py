@@ -264,8 +264,6 @@ def get_pref():
         )
 
 
-
-
 # =============== MATCHES.JS =========================
 @action('matches', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'matches.html')
