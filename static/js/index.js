@@ -245,7 +245,7 @@ let init = (app) => {
                         pup.url = response.data.dog_url;
                         pup.image = response.data.dog_photos;
                         if(pup.image == "[]"){
-                            pup.image = "https://i.ibb.co/jH8D4Km/pawfect-match-logo.png"
+                            pup.image = "https://i.ibb.co/6vhvddR/pawfect-match-logo-2.png"
                         }
                         else{
                             pup.image = pup.image.split(", ");
