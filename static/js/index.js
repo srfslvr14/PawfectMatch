@@ -15,7 +15,17 @@ let init = (app) => {
         cur_email: "",
         test_get_api: "",
         test_add_match: "",
+
         api_loading: false,
+        no_results: false,
+        trash_counter: 0,
+        change_pref: false,
+
+        breed_pref: "",
+        pref_size: "",
+        pref_potty: "",
+        pref_kid: "",
+        pref_location: "",
     };
 
     app.enumerate = (a) => {
@@ -43,7 +53,6 @@ let init = (app) => {
 
     app.match = function (){
 
-
         //Shingo 5/25 Adding matches into matching database
         //====================================================
         app.vue.disp_cards_idx--;
@@ -54,6 +63,7 @@ let init = (app) => {
 
         app.vue.disp_cards_idx++;
 
+        // TODO: or if the dog at the idx is empty
         if (app.vue.disp_cards_idx > 20){
             app.vue.disp_cards_idx = 1;
 
@@ -69,6 +79,7 @@ let init = (app) => {
     app.no_match = function (){
         app.vue.disp_cards_idx++;
 
+        // TODO: or if the dog at the idx is empty
         if (app.vue.disp_cards_idx > 20){
             app.vue.disp_cards_idx = 1;
 
@@ -84,12 +95,14 @@ let init = (app) => {
     app.get_test = function (){
         console.log("get_test\n")
         app.getNextPupsFromAPI();
+        app.init();
     };
     
     app.getNextPupsFromAPI = async function getNextPupsFromAPI() {
         app.data.api_loading = true;
 
         console.log("get new bitches \n");
+
         var client = new petfinder.Client({
             apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE", 
             secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
@@ -99,16 +112,30 @@ let init = (app) => {
         console.log(page);
         apiResult = await client.animal.search({
             type: "Dog",
-            breed: "Corgi",
+            // name: "Jevin",
+            breed: app.vue.pref_breed,
+            house_trained: app.vue.pref_potty,
+
             page,
             limit: 20,
+        }).catch(function (error) {
+            console.log(error);
         });
 
-        app.data.pup_cards = [];
+        // if(apiResult.data.animals == []){
+        //     app.vue.no_results = true;
+        // }
+        // else{
+        //     app.vue.no_results = false;
+        // }
 
-        let dogIdx = (page - 1) * 100;
+        // IF THE API CALL BREEDS NO RESULTS, THEN TURN OFF DISPLAY FOR NO RESULTS
+        // THIS IS IN getNextPupsFromAPI AFTER YOU MAKE THE PREF API CALL BEFORE I PUSH TO THE DB
+
+
+        app.data.pup_cards = [];
         apiResult.data.animals.forEach(function(animal) {
-            ++dogIdx;
+            // ++dogIdx;
             // console.log(dogIdx);
             app.vue.pup_cards.push({
                 id: animal.id,
@@ -161,34 +188,74 @@ let init = (app) => {
                 app.vue.disp_cards_idx = response.data.user_index;
             });
 
+        
+        axios.get(get_pref_url)
+			.then(function (response) {
+				app.vue.pref_breed = response.data.breed;
+                // app.vue.pref_potty = response.data.potty;
+
+                response.data.potty == "Yes" ? app.vue.pref_potty = true : app.vue.pref_potty = false;
+
+                app.vue.pref_size = response.data.size;
+                app.vue.pref_kid = response.data.kid;
+                app.vue.pref_location = response.data.location;
+		});
+
         app.data.pup_cards = [];
         app.enumerate(app.vue.pup_cards);
         // TODO make a reset pup_cards function, to set pupcards=[], and then insert 20 of them? 
         // to call before here before for loop, and before api calls to reset the 20
+        let running = true;
         for (let pup of app.vue.pup_cards) {
             // console.log("pup init" + pup._idx);
             axios.get(get_curr_dogs_url, { params: {pup_idx: pup._idx} })
                 .then(function (response) {
-                    pup.id = response.data.dog_id;
-                    pup.name =response.data.dog_name;
-                    pup.breed = response.data.dog_breed;
-                    pup.age = response.data.dog_age;
-                    pup.gender = response.data.dog_gender;
-                    pup.size = response.data.dog_size;
-                    pup.fur = response.data.dog_fur;
-                    pup.potty = response.data.dog_potty;
-                    pup.kid = response.data.dog_kid;
-                    pup.location = response.data.dog_location;
-                    pup.url = response.data.dog_url;
-                    pup.image = response.data.dog_photos;
-                    if(pup.image == "[]"){
-                        pup.image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
-                    }else{
-                        pup.image = pup.image.split(", ");
-                        pup.image = pup.image[3].split("'")[3];
+                    // results are not there
+                    if(response.data.empty == true){
+                        app.vue.no_results = true;
+                        if(pup._idx >= 20){
+                            console.log("empty, call the API ");
+                            app.vue.trash_counter++;
+                            console.log("trash: " + app.vue.trash_counter);
+                            if(app.vue.trash_counter >= 4){
+                                app.vue.no_results = false;
+                                app.vue.change_pref = true;
+                            }
+                            else{ app.getNextPupsFromAPI();}
+                        }
                     }
-            });
+                    // results are there
+                    else{
+                        // reset any error catching 
+                        app.vue.trash_counter = 0;
+                        app.vue.change_pref = false;
+                        app.vue.no_results = false;
+
+                        pup.id = response.data.dog_id;
+                        pup.name =response.data.dog_name;
+                        pup.breed = response.data.dog_breed;
+                        pup.age = response.data.dog_age;
+                        pup.gender = response.data.dog_gender;
+                        pup.size = response.data.dog_size;
+                        pup.fur = response.data.dog_fur;
+                        pup.potty = response.data.dog_potty;
+                        pup.kid = response.data.dog_kid;
+                        pup.location = response.data.dog_location;
+                        pup.url = response.data.dog_url;
+                        pup.image = response.data.dog_photos;
+                        if(pup.image == "[]"){
+                            pup.image = "https://i.ibb.co/jH8D4Km/pawfect-match-logo.png"
+                        }
+                        else{
+                            pup.image = pup.image.split(", ");
+                            pup.image = pup.image[3].split("'")[3];
+                        }
+                    }
+                    
+                    
+                });
         }
+        
         // app.enumerate(app.vue.pup_cards);
     };
 
@@ -199,3 +266,5 @@ let init = (app) => {
 // This takes the (empty) app object, and initializes it,
 // putting all the code i
 init(app);
+
+

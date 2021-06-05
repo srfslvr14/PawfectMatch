@@ -11,12 +11,12 @@
 </div>
 
 <div class="section" id="vue-target" v-cloak>
-    <!-- <div>
+    <div>
         <p>IF THE BELOW FIELDS ARE EMPTY, CLICK API TEST</p>
         <a id="API_button" class="button is-success" @click="get_test()">
             <i class="fa fa-paw"></i>&nbsp; API TEST!
         </a> 
-    </div> -->
+    </div>
 
     <!-- NO MATCH BUTTON -->
     <div class="columns is-mobile is-vcentered is-flex-desktop">
@@ -30,7 +30,7 @@
     <!-- DOG CARD -->
     <div class="column is-10">
         <!-- CURRENT PUP CARD DISPLAYED -->
-        <div v-if="!api_loading" class="container">
+        <div v-if="!api_loading && !no_results && !change_pref" class="container">
             <div v-for="p in pup_cards">
                 <div v-if="disp_cards_idx == p._idx" class="box notification">
                     <div class="columns">
@@ -58,12 +58,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="api_loading" class="container block">
+        <div v-if="api_loading || no_results" class="container block">
             <br>
             <div>
                 loading more doggos... <br>
                 <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
                 <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+            </div>
+        </div>
+        <div v-if="change_pref" class="container block">
+            <br>
+            <div>
+                <div class="title">Your prefrences yeilded no results, please change them and try again </div> <br>
+                <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
             </div>
         </div>
     </div>
@@ -84,6 +91,7 @@
     let update_idx_url = "[[=XML(update_idx_url)]]";  
     let get_user_idx_url = "[[=XML(get_user_idx_url)]]";
     let add_match_url = "[[=XML(add_match_url)]]"  
+    let get_pref_url = "[[=XML(get_pref_url)]]";
 </script>
 
 <script src="js/sugar.min.js"></script>

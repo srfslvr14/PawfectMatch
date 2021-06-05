@@ -63,6 +63,7 @@ def index():
         get_curr_dogs_url = URL('get_curr_dogs', signer=url_signer),
         add_match_url = URL('add_match',signer=url_signer),
         get_curr_matches_url = URL('get_curr_matches',signer=url_signer),
+        get_pref_url = URL('get_pref', signer=url_signer),
     )
 
 @action('update_idx', method="POST")
@@ -137,12 +138,6 @@ def set_curr_dogs():
 @action.uses(url_signer.verify(), db, session, auth.user)
 def get_curr_dogs():
     
-    # 1. get currdog from the id and userID
-    # 2. if next-up db is empty,
-    #   3. loop through match-history and calculate prefrneces of the user, and store them into user-pref db
-    #   4. make an API call to fill it with 20 new dogs that fufill the prefrences just calculated 
-    # 5. pop off #1, and store it as currdog
-
     pup_idx = request.params.get('pup_idx')
     # print(pup_idx)
     # pup_idx = int(pup_idx)
@@ -151,9 +146,12 @@ def get_curr_dogs():
     # get user's curr_dogs list, and dog in that list with pup_idx id
     user = db(db.dbuser.auth == get_user()).select().first()
     currdogs_dog = db((db.curr_dogs.user_owned == user) & (db.curr_dogs.dog_index == pup_idx)).select().first()
-
     fished_pup = db( (db.dog.list_in == currdogs_dog) ).select().first()
     # assert fished_pup is not None
+    if fished_pup is None:
+        return dict(
+            empty = True,
+        )
 
     return dict(
         dog_id      =fished_pup.dog_id,
@@ -168,7 +166,7 @@ def get_curr_dogs():
         dog_location=fished_pup.dog_location,
         dog_url     =fished_pup.dog_url,
         dog_photos  =fished_pup.dog_photos
-        )
+    )
 
 
 # =============== PROFILE_PAGE.JS =========================
@@ -250,8 +248,20 @@ def set_pref():
 def get_pref():
     user = db(db.dbuser.auth == get_user()).select().first()
     user_preferences = db((db.user_pref.user_owned == user)).select().first()
-    assert user_preferences is not None
+    if user_preferences is None:
+        db.user_pref.insert(
+            user_owned = user,
+            breed = "",
+            size = "",
+            fur = "",
+            age = "",
+            gender = "",
+            potty = "",
+            kid = "",
+            location = "",
+        )
 
+    user_preferences = db((db.user_pref.user_owned == user)).select().first()
     return dict(
             breed = user_preferences.breed,
             age = user_preferences.age,

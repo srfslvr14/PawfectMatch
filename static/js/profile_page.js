@@ -111,8 +111,6 @@ let init = (app) => {
 				response.data.kid 		? app.vue.kid 		= response.data.kid 	: app.vue.kid = "";
 				response.data.location 	? app.vue.location 	= response.data.location: app.vue.location = "";
 		});
-		
- 
 	};
 
 
