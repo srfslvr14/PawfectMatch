@@ -231,6 +231,7 @@ let init = (app) => {
                         app.vue.change_pref = false;
                         app.vue.no_results = false;
 
+                        // get db data
                         pup.id = response.data.dog_id;
                         pup.name =response.data.dog_name;
                         pup.breed = response.data.dog_breed;
