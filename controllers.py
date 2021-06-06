@@ -211,7 +211,7 @@ def profile(userID=None):
 @action.uses(url_signer.verify(), db)
 def set_pref():
     #  get user
-    print("in set pref")
+    # print("in set pref")
     
     user = db(db.dbuser.auth == get_user()).select().first()
     assert user is not None

@@ -94,7 +94,7 @@ let init = (app) => {
     };
 
     app.get_test = function (){
-        console.log("get_test\n")
+        // console.log("get_test\n")
         app.getNextPupsFromAPI();
         app.init();
     };
@@ -102,7 +102,7 @@ let init = (app) => {
     app.getNextPupsFromAPI = async function getNextPupsFromAPI() {
         app.data.api_loading = true;
 
-        console.log("get new bitches \n");
+        // console.log("get new bitches \n");
 
         var client = new petfinder.Client({
             apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE", 
@@ -110,13 +110,13 @@ let init = (app) => {
         });
 
         let page = Math.floor(Math.random() * 10)+1; // returns a random integer from 1 to 10
-        console.log(page);
+        // console.log(page);
 
         if(app.vue.pref_location == ""){
 
             app.vue.no_zip = true;
 
-            console.log("no location")
+            // console.log("no location")
             apiResult = await client.animal.search({
                 type: "Dog",
                 breed: app.vue.pref_breed,
@@ -126,11 +126,11 @@ let init = (app) => {
                 page,
                 limit: 20,
             }).catch(function (error) {
-                console.log(error);
+                // console.log(error);
             });
         }
         else{
-            console.log("yes location")
+            // console.log("yes location")
             apiResult = await client.animal.search({
                 type: "Dog",
                 breed: app.vue.pref_breed,
@@ -140,7 +140,7 @@ let init = (app) => {
                 page,
                 limit: 20,
             }).catch(function (error) {
-                console.log(error);
+                // console.log(error);
             });
         }
 
@@ -172,7 +172,7 @@ let init = (app) => {
     app.ZIPONLY_getNextPupsFromAPI = async function ZIPONLY_getNextPupsFromAPI() {
         app.data.api_loading = true;
 
-        console.log("zip only get new bitches \n");
+        // console.log("zip only get new bitches \n");
 
         var client = new petfinder.Client({
             apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE", 
@@ -274,7 +274,7 @@ let init = (app) => {
                     if(response.data.empty == true){
                         app.vue.no_results = true;
                         if(pup._idx >= 20){
-                            console.log("empty, call the pref+zip API ");
+                            // console.log("empty, call the pref+zip API ");
                             app.vue.trash_counter++;
                             console.log("trash: " + app.vue.trash_counter);
                             if(app.vue.trash_counter >= 4){
@@ -284,7 +284,7 @@ let init = (app) => {
                             else{ app.getNextPupsFromAPI();}
 
                             if(app.vue.change_pref == true){
-                                console.log("zip only");
+                                // console.log("zip only");
                                 app.vue.change_pref == false;
                                 setTimeout(() => { app.ZIPONLY_getNextPupsFromAPI(); }, 5000);
                                 // app.ZIPONLY_getNextPupsFromAPI();
