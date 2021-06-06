@@ -32,11 +32,11 @@
         <!-- CURRENT PUP CARD DISPLAYED -->
         <div v-if="!api_loading" class="container">
             <div v-for="p in pup_cards">
-                <div v-if="disp_cards_idx == p._idx" class="box notification">
+                <div v-if="disp_cards_idx == p._idx" class="box">
                     <div class="columns">
                         <div class="column is-three-fifths">
                             <figure class="image">
-                                <img style="max-height: 600px;" v-bind:src="p.image" alt="photto">
+                                <img style="max-height: 600px; object-fit: cover; object-position: 100% 0;" v-bind:src="p.image" alt="photo" >
                             </figure>
                             <br>
                             <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{p.name}}</strong></p>
@@ -49,6 +49,13 @@
                             <p class="subtitle"> <strong>Age: </strong>           {{p.age}}        </p>
                             <p class="subtitle"> <strong>Size: </strong>          {{p.size}}       </p>
                             <p class="subtitle"> <strong>Fur: </strong>           {{p.fur}}        </p>
+                            <div v-if="p.potty == 'True' " class="box">
+                                <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
+                            </div>
+                            <div v-if="p.kid == 'True' " class="box">
+                                <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
+                            </div>
+                            <br>
                             <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
                             <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
                             <!-- <p class="subtitle"> <strong>Distance: </strong>      {{p.location}}   </p> -->
