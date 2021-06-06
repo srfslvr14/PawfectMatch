@@ -130,7 +130,12 @@
         </div>
         <br>
 
-        <p v-if="display_warning" class="has-text-danger">Cannot save preferences with current choices</p>
+        <div v-if="display_warning">
+            <p class="has-text-danger"> 
+                <i class="fa fa-exclamation-circle"></i>
+                Cannot save preferences with current choices
+            </p>
+        </div>
 
         <!-- buttons -->
         <div class="field is-horizontal">

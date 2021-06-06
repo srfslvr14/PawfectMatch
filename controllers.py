@@ -305,7 +305,7 @@ def add_match():
     len = 0
     for rows in matches:
         len+=1
-    if len > 10:
+    if len > 12:
         first_id = matches.first().id
         db(db.recent_matches.id == first_id).delete()
     return "ok"
