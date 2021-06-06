@@ -6,11 +6,17 @@
     }
 </style>
 
-<div class="title has-text-centered" style="padding-top: 7%;">
+<div class="title has-text-centered" style="padding-top: 2%;">
     Start Swiping
 </div>
 
 <div class="section" id="vue-target" v-cloak>
+
+    <div v-if="no_zip" class="container block">
+        <div> Please set your location and your preferences in order to receive better results! </div> <br>
+    </div>
+
+
     <!-- <div>
         <p>IF THE BELOW FIELDS ARE EMPTY, CLICK API TEST</p>
         <a id="API_button" class="button is-success" @click="get_test()">
@@ -30,7 +36,7 @@
     <!-- DOG CARD -->
     <div class="column is-10">
         <!-- CURRENT PUP CARD DISPLAYED -->
-        <div v-if="!api_loading" class="container">
+        <div v-if="!api_loading && !no_results && !change_pref" class="container">
             <div v-for="p in pup_cards">
                 <div v-if="disp_cards_idx == p._idx" class="box">
                     <div class="columns">
@@ -58,6 +64,7 @@
                             <br>
                             <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
                             <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
+                            <p class="subtitle"> <strong>Location: </strong>      {{p.location}}        </p>
                             <!-- <p class="subtitle"> <strong>Distance: </strong>      {{p.location}}   </p> -->
                             <!-- <p class="info_box"> Url: {{p.url}} </p> -->
                         </div>
@@ -65,12 +72,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="api_loading" class="container block">
-            <br>
+        <div v-if="(api_loading || no_results) && !change_pref" class="container block"> <br>
             <div>
                 loading more doggos... <br>
                 <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
                 <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+            </div>
+        </div>
+        <div v-if="change_pref" class="container block">
+            <br>
+            <div>
+                <div class="title">We are brodening your preferences in order to give you results from your area </div> <br>
+                <!-- <img src=""></img> -->
+                <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i>
             </div>
         </div>
     </div>
@@ -91,6 +105,7 @@
     let update_idx_url = "[[=XML(update_idx_url)]]";  
     let get_user_idx_url = "[[=XML(get_user_idx_url)]]";
     let add_match_url = "[[=XML(add_match_url)]]"  
+    let get_pref_url = "[[=XML(get_pref_url)]]";
 </script>
 
 <script src="js/sugar.min.js"></script>

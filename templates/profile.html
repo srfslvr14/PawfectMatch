@@ -9,17 +9,6 @@
     <div class="title has-text-centered">
         My Name
     </div>
-    <!-- place image here -->
-    <!-- <figure class="image is-3by2">    
-        <img class="is-rounded" src="https://lanecdr.org/wp-content/uploads/2019/08/placeholder.png">
-    </figure> -->
-
-    <!-- <div>
-        <button class="button is-primary" v-if="is_hidden" @click="set_add_status(true); set_is_hidden(false);" >
-            <p>Edit Preferences &nbsp;</p>
-            <i class="fa fa-edit fa-fw"></i>
-        </button>
-    </div> -->
     
     <div class="section" >
         <div>
@@ -80,53 +69,6 @@
         </div>
         <br>
 
-        <!-- size -->
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label">Size</label>
-            </div>
-            <div class="field-body">
-                <div class="field is-narrow">
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select v-model="size">
-                                <option disabled value="" >No Preference</option>
-                                <option>Small</option>
-                                <option>Medium</option>
-                                <option>Large</option>
-                                <option>Extra-Large</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        <br>
-        
-        <!-- fur color -->
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label">Fur Color</label>
-            </div>
-            <div class="field-body">
-                <div class="field is-narrow">
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select v-model="fur">
-                                <!-- default preference -->
-                                 <option disabled value="">No Preference</option>
-                                <!-- loop through colors -->
-                                [[for c in colors_list:]]
-                                <option>[[=c]] </option>
-                                [[pass]]
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
 
         <!-- gender -->
         <div class="field is-horizontal">
@@ -172,28 +114,6 @@
         </div>
         <br>
 
-        <!-- kid -->
-        <div class="field is-horizontal">
-            <div class="field-label">
-                <label class="label">Kid Safe</label>
-            </div>
-            <div class="field-body">
-                <div class="field is-narrow">
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select v-model="kid">
-                                <!-- default preference -->
-                                <option disabled value="">No Preference</option>
-                                <option>Yes</option>
-                                <option>No</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-
         <!-- location -->
         <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -202,18 +122,20 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control is-expanded">
-                        <input class="input" type="text" placeholder="Distance">
+                        <input class="input" v-model="location" type="text" placeholder="Please enter your zip code" onkeyup="app.zip_validator()">
                     </p>
-                    <p class="help">Enter your zip code</p>
-                </div>
-                <div class="field">
-                    <p class="control is-expanded">
-                        <!-- input goes here and implment zip code validator -->
-                    </p>
+                    <p v-if="invalidZIP" class="has-text-danger">Not a valid ZIP code</p>
                 </div>
             </div>
         </div>
         <br>
+
+        <div v-if="display_warning">
+            <p class="has-text-danger"> 
+                <i class="fa fa-exclamation-circle"></i>
+                Cannot save preferences with current choices
+            </p>
+        </div>
 
         <!-- buttons -->
         <div class="field is-horizontal">

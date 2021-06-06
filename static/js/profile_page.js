@@ -14,6 +14,9 @@ let init = (app) => {
 	app.data = {
 		set_mode: false,
 		is_hidden: true,
+		invalidZIP: false,
+		display_warning: false,
+
 		breed: "",
 		age: "",
 		size: "",
@@ -25,22 +28,29 @@ let init = (app) => {
 	};
 
     app.set_pref = function () {
-        axios.post(set_pref_url,
-            {
-                breed: app.vue.breed,
-				age: app.vue.age,
-				size: app.vue.size,
-				fur: app.vue.fur,
-				gender: app.vue.gender,
-				potty: app.vue.potty,
-				kid: app.vue.kid,
-				location: app.vue.location,
-            });
-
-            // app.reset_form();
-            app.set_add_status(false);
-            app.set_is_hidden(true);
-            app.init();
+		if(app.vue.invalidZIP){ // not a valid ZIP
+			app.vue.display_warning = true;
+		}
+		else{
+			app.vue.display_warning = false;
+			axios.post(set_pref_url,
+				{
+					breed: app.vue.breed,
+					age: app.vue.age,
+					size: app.vue.size,
+					fur: app.vue.fur,
+					gender: app.vue.gender,
+					potty: app.vue.potty,
+					kid: app.vue.kid,
+					location: app.vue.location,
+				});
+	
+				// app.reset_form();
+				app.set_add_status(false);
+				app.set_is_hidden(true);
+				app.init();
+		}
+		// app.init();
     };
 
 	app.reset_form = function () {
@@ -78,6 +88,17 @@ let init = (app) => {
         app.vue.is_hidden = new_status;
     };
 
+	app.zip_validator = function (){
+		var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(app.vue.location);
+		console.log(isValidZip)
+		if(isValidZip){
+			app.vue.invalidZIP = false;
+		}
+		else{
+			app.vue.invalidZIP = true;
+		}
+	}
+
 	// We form the dictionary of all methods, so we can assign them
 	// to the Vue app in a single blow.
 	app.methods = {
@@ -86,6 +107,7 @@ let init = (app) => {
 		set_is_hidden: app.set_is_hidden,
 		reset_form: app.reset_form,
 		cancel_changes: app.cancel_changes,
+		zip_validator : app.zip_validator
 	};
 
 	// This creates the Vue instance.
@@ -111,8 +133,6 @@ let init = (app) => {
 				response.data.kid 		? app.vue.kid 		= response.data.kid 	: app.vue.kid = "";
 				response.data.location 	? app.vue.location 	= response.data.location: app.vue.location = "";
 		});
-		
- 
 	};
 
 
