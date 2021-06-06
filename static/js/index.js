@@ -23,10 +23,11 @@ let init = (app) => {
         no_zip: false,
 
         breed_pref: "",
-        pref_size: "",
+        pref_age: "",
+        pref_gender: "",
         pref_potty: "",
-        pref_kid: "",
         pref_location: "",
+        // pref_kid: "",
     };
 
     app.enumerate = (a) => {
@@ -110,37 +111,33 @@ let init = (app) => {
         });
 
         let page = Math.floor(Math.random() * 10)+1; // returns a random integer from 1 to 10
-        // console.log(page);
-
-        if(app.vue.pref_location == ""){
-
+        if(app.vue.pref_location == ""){ // no location given
             app.vue.no_zip = true;
-
-            // console.log("no location")
             apiResult = await client.animal.search({
                 type: "Dog",
                 breed: app.vue.pref_breed,
+                age: app.vue.pref_age,
+                gender: app.vue.pref_gender,
                 house_trained: app.vue.pref_potty,
                 // location: app.vue.pref_location,
-                // distance: 500,
                 page,
                 limit: 20,
             }).catch(function (error) {
-                // console.log(error);
+                console.log(error);
             });
         }
-        else{
-            // console.log("yes location")
+        else{ // location given
             apiResult = await client.animal.search({
                 type: "Dog",
                 breed: app.vue.pref_breed,
+                age: app.vue.pref_age,
+                gender: app.vue.pref_gender,
                 house_trained: app.vue.pref_potty,
                 location: app.vue.pref_location,
-                // distance: 500,
                 page,
                 limit: 20,
             }).catch(function (error) {
-                // console.log(error);
+                console.log(error);
             });
         }
 
@@ -251,9 +248,9 @@ let init = (app) => {
 			.then(function (response) {
 				app.vue.pref_breed = response.data.breed;
                 // app.vue.pref_potty = response.data.potty;
-
                 response.data.potty == "Yes" ? app.vue.pref_potty = true : app.vue.pref_potty = false;
-                app.vue.pref_size = response.data.size;
+                app.vue.pref_gender = response.data.gender;
+                app.vue.pref_age = response.data.age;
                 app.vue.pref_kid = response.data.kid;
                 app.vue.pref_location = response.data.location;
 		});
