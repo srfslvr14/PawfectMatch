@@ -34,6 +34,7 @@
           </section>
         </div>
     </div>
+
     <!-- delete pop up-->
     <div class="modal" id="delete_modal" v-cloak>
       <div class="modal-background" onclick="show_delete_modal()"></div>
@@ -50,6 +51,7 @@
         </footer>
       </div>
     </div>
+
     <!--Info pop up-->
     <div class="modal" id="info_modal">
         <div class="modal-background" onclick="show_info_modal()"></div>
@@ -63,33 +65,15 @@
             <div class="tile is-info">
                 <i class="fa-solid fa-spinner-third fa-"></i>
                 <span v-if="loading">
-                    <div>
-                      url: {{url}}
-                    </div>
-                    <div>
-                      breed: {{breed}}
-                    </div>
-                    <div>
-                      age: {{age}}
-                    </div>
-                    <div>
-                      gender: {{gender}}
-                    </div>
-                    <div>
-                      size: {{size}}
-                    </div>
-                    <div>
-                      fur: {{fur}}
-                    </div>
-                    <div>
-                      potty: {{potty}}
-                    </div>
-                    <div>
-                      kid: {{kid}}
-                    </div>
-                    <div>
-                      image: {{image}}
-                    </div>
+                  <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
+                  <div> {{breed}} </div>
+                  <div> {{age}} </div>
+                  <div> {{gender}} </div>
+                  <div> {{size}} </div>
+                  <div> fur: {{fur}} </div>
+                  <div v-if="potty">  Potty Trained </div>
+                  <div v-if="!potty"> Not Potty Trained </div>
+                  <a v-bind:href="url" target="_blank">View on Petfinder.com</a>
                 </span>
             </div>
           </section>

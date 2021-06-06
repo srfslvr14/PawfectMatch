@@ -112,25 +112,15 @@ let init = (app) => {
         console.log(page);
         apiResult = await client.animal.search({
             type: "Dog",
-            // name: "Jevin",
             breed: app.vue.pref_breed,
             house_trained: app.vue.pref_potty,
-
+            location: app.vue.pref_location,
+            // distance: 500,
             page,
             limit: 20,
         }).catch(function (error) {
             console.log(error);
         });
-
-        // if(apiResult.data.animals == []){
-        //     app.vue.no_results = true;
-        // }
-        // else{
-        //     app.vue.no_results = false;
-        // }
-
-        // IF THE API CALL BREEDS NO RESULTS, THEN TURN OFF DISPLAY FOR NO RESULTS
-        // THIS IS IN getNextPupsFromAPI AFTER YOU MAKE THE PREF API CALL BEFORE I PUSH TO THE DB
 
 
         app.data.pup_cards = [];
@@ -149,7 +139,54 @@ let init = (app) => {
                 potty: animal.attributes.house_trained,
                 kid: animal.environment.children,
                 image: animal.photos,
-                location: "",
+                location: animal.contact.address.city+ ", "+ animal.contact.address.state+ " "+ animal.contact.address.postcode
+            });
+        });
+
+        axios.post(set_curr_dogs_url, {new_pup_cards: app.vue.pup_cards});
+        app.init();
+        app.data.api_loading = false;
+    }
+
+    app.ZIPONLY_getNextPupsFromAPI = async function ZIPONLY_getNextPupsFromAPI() {
+        app.data.api_loading = true;
+
+        console.log("zip only get new bitches \n");
+
+        var client = new petfinder.Client({
+            apiKey: "nRVIaz6AEO2qZ6DCKXDKcw3EX4zRxbjKz64UQDFheRh5VBdAIE", 
+            secret: "obAhKvjIzSik0WT6T7yrMTkKYQcsSUj8nktFxGJF"
+        });
+
+        let page = Math.floor(Math.random() * 10)+1; // returns a random integer from 1 to 10
+        console.log(page);
+        apiResult = await client.animal.search({
+            type: "Dog",
+            location: app.vue.pref_location,
+            page,
+            limit: 20,
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+
+        app.data.pup_cards = [];
+        apiResult.data.animals.forEach(function(animal) {
+            // ++dogIdx;
+            // console.log(dogIdx);
+            app.vue.pup_cards.push({
+                id: animal.id,
+                name: animal.name,
+                url: animal.url,
+                breed: animal.breeds.primary,
+                age: animal.age,
+                gender: animal.gender,
+                size: animal.size,
+                fur: animal.colors.primary,
+                potty: animal.attributes.house_trained,
+                kid: animal.environment.children,
+                image: animal.photos,
+                location: animal.contact.address.city+ ", "+ animal.contact.address.state+ " "+ animal.contact.address.postcode
             });
         });
 
@@ -168,6 +205,7 @@ let init = (app) => {
         // get_next_pupcards: app.get_next_pupcards,
         get_test: app.get_test,
         getNextPupsFromAPI: app.getNextPupsFromAPI,
+        ZIPONLY_getNextPupsFromAPI: app.ZIPONLY_getNextPupsFromAPI,
     };
 
     // This creates the Vue instance.
@@ -187,8 +225,7 @@ let init = (app) => {
             .then(function (response) {
                 app.vue.disp_cards_idx = response.data.user_index;
             });
-
-        
+ 
         axios.get(get_pref_url)
 			.then(function (response) {
 				app.vue.pref_breed = response.data.breed;
@@ -203,18 +240,14 @@ let init = (app) => {
 
         app.data.pup_cards = [];
         app.enumerate(app.vue.pup_cards);
-        // TODO make a reset pup_cards function, to set pupcards=[], and then insert 20 of them? 
-        // to call before here before for loop, and before api calls to reset the 20
-        let running = true;
         for (let pup of app.vue.pup_cards) {
-            // console.log("pup init" + pup._idx);
             axios.get(get_curr_dogs_url, { params: {pup_idx: pup._idx} })
                 .then(function (response) {
                     // results are not there
                     if(response.data.empty == true){
                         app.vue.no_results = true;
                         if(pup._idx >= 20){
-                            console.log("empty, call the API ");
+                            console.log("empty, call the pref+zip API ");
                             app.vue.trash_counter++;
                             console.log("trash: " + app.vue.trash_counter);
                             if(app.vue.trash_counter >= 4){
@@ -222,7 +255,18 @@ let init = (app) => {
                                 app.vue.change_pref = true;
                             }
                             else{ app.getNextPupsFromAPI();}
+
+                            if(app.vue.change_pref == true){
+                                console.log("zip only");
+                                app.vue.change_pref == false;
+                                setTimeout(() => { app.ZIPONLY_getNextPupsFromAPI(); }, 5000);
+                                // app.ZIPONLY_getNextPupsFromAPI();
+                            }
                         }
+                        // else if(app.vue.change_pref == true && app.vue.trash_counter >=4){
+                        //     app.ZIPONLY_getNextPupsFromAPI();
+                        //     app.vue.change_pref == false;
+                        // }
                     }
                     // results are there
                     else{
@@ -256,7 +300,7 @@ let init = (app) => {
                     
                 });
         }
-        
+
         // app.enumerate(app.vue.pup_cards);
     };
 

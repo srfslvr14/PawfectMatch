@@ -51,6 +51,7 @@
                             <p class="subtitle"> <strong>Fur: </strong>           {{p.fur}}        </p>
                             <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
                             <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
+                            <p class="subtitle"> <strong>Location: </strong>      {{p.location}}        </p>
                             <!-- <p class="subtitle"> <strong>Distance: </strong>      {{p.location}}   </p> -->
                             <!-- <p class="info_box"> Url: {{p.url}} </p> -->
                         </div>
@@ -58,8 +59,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="api_loading || no_results" class="container block">
-            <br>
+        <div v-if="(api_loading || no_results) && !change_pref" class="container block"> <br>
             <div>
                 loading more doggos... <br>
                 <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
@@ -69,9 +69,9 @@
         <div v-if="change_pref" class="container block">
             <br>
             <div>
-                <div class="title">Your prefrences yeilded no results, please change them and try again </div> <br>
+                <div class="title">We are brodening your preferences in order to give you results from your area </div> <br>
                 <!-- <img src=""></img> -->
-                <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
+                <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i>
             </div>
         </div>
     </div>

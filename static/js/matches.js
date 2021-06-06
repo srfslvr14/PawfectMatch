@@ -18,7 +18,8 @@ let init = (app) => {
 		email: "",
 		phone: "",
 		address: "",
-
+		
+		name: "",
 		url: "",
 		breed: "",
 		age: "",
@@ -49,10 +50,8 @@ let init = (app) => {
 				// Do something with resp.data.animal
 				app.vue.email = resp.data.animal.contact.email;
 				app.vue.phone = resp.data.animal.contact.phone;
-				app.vue.adress = 	resp.data.animal.contact.address.address1+ " " + 
-									resp.data.animal.contact.address.address2+ " "+
-									resp.data.animal.contact.address.city+ " "+ 
-									resp.data.animal.contact.address.state+ " "+
+				app.vue.address = 	resp.data.animal.contact.address.city+ ", "+ 
+									resp.data.animal.contact.address.state+ ", "+
 									resp.data.animal.contact.address.postcode+" " +
 									resp.data.animal.contact.address.country;
 				app.vue.loading = true;
@@ -62,9 +61,9 @@ let init = (app) => {
 	}
 
 	app.delete_match = function (row_idx) {
-		console.log(row_idx)
+		// console.log(row_idx)
 		let id = app.vue.match_cards[row_idx].id;
-		console.log(id)
+		// console.log(id)
 		axios.get(delete_match_url, { params: { id: id } }).then(function (response) {
 			for (let i = 0; i < app.vue.match_cards.length; i++) {
 				if (app.vue.match_cards[i].id === id) {
@@ -93,6 +92,7 @@ let init = (app) => {
 		client.animal.show(id)
 			.then(resp => {
 				// Do something with resp.data.animal
+				app.vue.name= resp.data.animal.name;
                 app.vue.url= resp.data.animal.url;
                 app.vue.breed= resp.data.animal.breeds.primary;
                 app.vue.age= resp.data.animal.age;
@@ -130,18 +130,17 @@ let init = (app) => {
 	// and then set all their values up, and then set up each cards data
 	// make sure to call get_next_pupcards if needed
 	app.init = () => {
-		console.log("match init");
+		// console.log("match init");
 		let match_ids = []
 		axios.get(get_matches_id_url)
 			.then(function (response) {
 				match_ids = response.data.match_ids;
-				console.log(match_ids.length)
 				app.vue.match_cards = [];
 				for (var i = 0; i < match_ids.length; i++) {
-					console.log("match pup init\n");
+					// console.log("match pup init\n");
 					axios.get(get_curr_matches_url, { params: { match_id: match_ids[i] } })
 						.then(function (response) {
-							console.log(response);
+							// console.log(response);
 							// console.log(response)
 							let image = response.data.dog_images
 		
