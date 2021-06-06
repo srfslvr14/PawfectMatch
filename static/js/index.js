@@ -20,6 +20,7 @@ let init = (app) => {
         no_results: false,
         trash_counter: 0,
         change_pref: false,
+        no_zip: false,
 
         breed_pref: "",
         pref_size: "",
@@ -110,18 +111,38 @@ let init = (app) => {
 
         let page = Math.floor(Math.random() * 10)+1; // returns a random integer from 1 to 10
         console.log(page);
-        apiResult = await client.animal.search({
-            type: "Dog",
-            breed: app.vue.pref_breed,
-            house_trained: app.vue.pref_potty,
-            location: app.vue.pref_location,
-            // distance: 500,
-            page,
-            limit: 20,
-        }).catch(function (error) {
-            console.log(error);
-        });
 
+        if(app.vue.pref_location == ""){
+
+            app.vue.no_zip = true;
+
+            console.log("no location")
+            apiResult = await client.animal.search({
+                type: "Dog",
+                breed: app.vue.pref_breed,
+                house_trained: app.vue.pref_potty,
+                // location: app.vue.pref_location,
+                // distance: 500,
+                page,
+                limit: 20,
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+        else{
+            console.log("yes location")
+            apiResult = await client.animal.search({
+                type: "Dog",
+                breed: app.vue.pref_breed,
+                house_trained: app.vue.pref_potty,
+                location: app.vue.pref_location,
+                // distance: 500,
+                page,
+                limit: 20,
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
 
         app.data.pup_cards = [];
         apiResult.data.animals.forEach(function(animal) {
@@ -232,11 +253,17 @@ let init = (app) => {
                 // app.vue.pref_potty = response.data.potty;
 
                 response.data.potty == "Yes" ? app.vue.pref_potty = true : app.vue.pref_potty = false;
-
                 app.vue.pref_size = response.data.size;
                 app.vue.pref_kid = response.data.kid;
                 app.vue.pref_location = response.data.location;
 		});
+
+        if(app.vue.pref_location != ""){
+            app.vue.no_zip = false;
+        }
+        // else{
+        //     app.vue.no_zip = false;
+        // }
 
         app.data.pup_cards = [];
         app.enumerate(app.vue.pup_cards);
