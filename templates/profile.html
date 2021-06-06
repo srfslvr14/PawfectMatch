@@ -1,48 +1,166 @@
 [[extend 'layout.html']]
-<div class="section">
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<div class="section" id="vue-profile" v-cloak>
     <div class="title has-text-centered">
         My Name
     </div>
-    <figure class="image is-3by2">
-        <img class="is-rounded" src="https://lanecdr.org/wp-content/uploads/2019/08/placeholder.png">
-    </figure>
-    <br>
-    <div>
-        <strong><p class="is-size-3-desktop">Bio</p></strong>
-        <textarea class="textarea" placeholder="Profile Bio"></textarea>
-    </div>
-    <br>
-    <br>
-    <div>
-        <strong><p class="is-size-3-desktop">Preferences</p></strong>
-        <p class="info_box">Breed:</p>
-        <p class="info_box">Age Range:</p>
-        <p class="info_box">Gender:</p>
-        <p class="info_box">Size:</p>
-        <p class="info_box">Fur Color:</p>
-        <p class="info_box">Potty Trained:</p>
-        <p class="info_box">Kid Safe:</p>
-        <p class="info_box">Location:</p>
-    </div>
+    
+    <div class="section" >
+        <div>
+            <strong>
+                <p class="is-size-3-desktop">Set Your Preferences</p>
+            </strong>
+            <br>
+        </div>
 
-<div class="container">
-    <label class="label">multiple select test</label>
-    <p class="control">
-    <select style="width:25%;" multiple>
-        <option value=""></option>
-        <option value="1">one</option>
-        <option value="2">two</option>
-        <option value="3">three</option>
-        <option value="4">four</option>
-        <option value="5">five</option>
-    </select>
-    </p>
-</div>
+        <!-- breed -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Breed</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth" >
+                            <select v-model="breed">
+                                <!-- default preference -->
+                                <option disabled value="" >No Preference</option>
+
+                                <!-- loop through colors -->
+                                [[for b in breed_list:]]
+                                <option>[[=b]] </option>
+                                [[pass]]
+                            </select>
+                            <!-- <input type="text" v-model="breed" class="input"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <!-- age -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Age</label>
+            </div>
+
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select v-model="age">
+                                <option disabled value="" >No Preference</option>
+                                <option>Baby</option>
+                                <option>Young</option>
+                                <option>Adult</option>
+                                <option>Senior</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+
+
+        <!-- gender -->
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Gender</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select v-model="gender">
+                                <!-- default preference -->
+                                <option disabled value="">No Preference</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <!-- potty trained -->
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Potty Trained?</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select v-model="potty">
+                                <!-- default preference -->
+                                <option disabled value="">No Preference</option>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <!-- location -->
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Location</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input class="input" v-model="location" type="text" placeholder="Please enter your zip code" onkeyup="app.zip_validator()">
+                    </p>
+                    <p v-if="invalidZIP" class="has-text-danger">Not a valid ZIP code</p>
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div v-if="display_warning">
+            <p class="has-text-danger"> 
+                <i class="fa fa-exclamation-circle"></i>
+                Cannot save preferences with current choices
+            </p>
+        </div>
+
+        <!-- buttons -->
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" @click="set_pref" value="Save Preferences" class="button is-primary">
+                        <input type="reset" @click="reset_form" value="Reset Preferences" class="button is-danger">
+                        <input type="submit" @click="cancel_changes" value="Cancel Changes" class="button is-warning">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 [[block page_scripts]]
-<script src="js/profile_page.js">
-
+<script>
+    let set_pref_url = "[[=XML(set_pref_url)]]";
+    let get_pref_url = "[[=XML(get_pref_url)]]";
 </script>
+<script src="js/profile_page.js"></script>
+<!-- <script src="js/selectize.js"></script> this is for multiple select -->
 [[end]]

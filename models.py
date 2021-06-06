@@ -37,11 +37,12 @@ db.define_table(
     Field('user_owned', 'reference dbuser', ondelete="CASCADE"),
     Field('breed'),
     Field('size'),
-    Field('fur_color'),
+    Field('gender'),
+    Field('fur'),
     Field('age'),
-    Field('house_trained'),
-    Field('kid_safe'),
-    Field('pet_safe'),
+    Field('potty'),
+    Field('kid'),
+    Field('location'),
 )
 
 db.define_table(
@@ -65,7 +66,6 @@ db.define_table(
     Field('dog_kid'),
     Field('dog_location'),
     Field('dog_url'),
-    Field('dog_compscore', 'integer', default=0, requires=IS_INT_IN_RANGE(0,10)),
     Field('dog_photos'),
 )
 

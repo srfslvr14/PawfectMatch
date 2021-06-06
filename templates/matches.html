@@ -12,22 +12,17 @@
         <div class="modal-background" onclick="show_contact_modal()"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Contact Info</p>
+            <p class="modal-card-title">Shelter's Contact Info</p>
             <button class="delete" onclick="show_contact_modal()" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
             <progress v-if="!loading" class="progress is-small" max="100">15%</progress>
             <div class="tile is-info">
                 <span v-if= "loading">
-                    <div>
-                      email: {{email}}
-                    </div>
-                    <div>
-                      number: {{phone}}
-                    </div>
-                    <div>
-                      address: {{address}}
-                    </div>
+                    <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
+                    <div class="subtitle" v-if= "email != null "> Email: {{email}} </div>
+                    <div class="subtitle" v-if= "phone != null "> Number: {{phone}} </div>
+                    <div class="subtitle" v-if= "address != null "> Location: {{address}} </div>
                     
                 </span>
             </div>
@@ -63,33 +58,15 @@
             <div class="tile is-info">
                 <i class="fa-solid fa-spinner-third fa-"></i>
                 <span v-if="loading">
-                    <div>
-                      url: {{url}}
-                    </div>
-                    <div>
-                      breed: {{breed}}
-                    </div>
-                    <div>
-                      age: {{age}}
-                    </div>
-                    <div>
-                      gender: {{gender}}
-                    </div>
-                    <div>
-                      size: {{size}}
-                    </div>
-                    <div>
-                      fur: {{fur}}
-                    </div>
-                    <div>
-                      potty: {{potty}}
-                    </div>
-                    <div>
-                      kid: {{kid}}
-                    </div>
-                    <div>
-                      image: {{image}}
-                    </div>
+                  <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
+                  <div class="subtitle"> {{breed}}</div>
+                  <div class="subtitle"> {{gender}} </div>
+                  <div class="subtitle"> {{age}} </div>
+                  <div class="subtitle"> {{size}} Sized</div>
+                  <div class="subtitle"> fur: {{fur}} </div>
+                  <div class="subtitle" v-if="potty">  Potty Trained </div>
+                  <div class="subtitle" v-if="!potty"> Not Potty Trained </div>
+                  <a v-bind:href="url" target="_blank">View on Petfinder.com</a>
                 </span>
             </div>
           </section>
@@ -97,7 +74,7 @@
     </div>
 
     <div>
-        <div class=" title has-text-centered" style="color: #985d2d;"><b>My Matches</b></div>
+        <div class=" title has-text-centered" style="color: #985d2d;"><b>My Recent Matches</b></div>
         <br>
       
         <div class="columns is-multiline">
@@ -110,15 +87,14 @@
                 </figure>
               </div>
               <div class="content" style="margin: 3%;cursor: pointer;" @click="getMatchInfoFromAPI(match.dog_index)">
-                <h1>{{match.dog_name}}
-                </h1>
+                <h1>{{match.dog_name}}</h1>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
-                  Contact
-                </a>
+                <a class="card-footer-item has-text-primary" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
+                  <i class="fa fa-address-book-o fa-lg"></i>
+              </a>
                 <a class="card-footer-item has-text-danger" id="tog" @click="select_delete_match(match._idx)">
-                    <i class="fa fa-trash fa-lg"></i>
+                  <i class="fa fa-trash fa-lg"></i>
                 </a>
               </footer>
             </div>
