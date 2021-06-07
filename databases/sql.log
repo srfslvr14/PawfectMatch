@@ -1,0 +1,112 @@
+timestamp: 2021-06-05T15:33:24.350815
+CREATE TABLE "py4web_session"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "rkey" CHAR(512),
+    "rvalue" TEXT,
+    "expiration" INTEGER,
+    "created_on" TIMESTAMP,
+    "expires_on" TIMESTAMP
+);
+success!
+timestamp: 2021-06-05T15:33:24.382925
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "email" CHAR(512) UNIQUE,
+    "password" CHAR(512),
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "sso_id" CHAR(512),
+    "action_token" CHAR(512),
+    "last_password_change" TIMESTAMP,
+    "past_passwords_hash" TEXT
+);
+success!
+timestamp: 2021-06-05T15:33:24.399045
+CREATE TABLE "auth_user_tag_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "path" CHAR(512),
+    "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-06-05T15:33:24.567933
+CREATE TABLE "dbuser"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "auth" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "user_email" CHAR(512),
+    "curr_dog_index" CHAR(512)
+);
+success!
+timestamp: 2021-06-05T15:33:24.583441
+CREATE TABLE "user_pref"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "breed" CHAR(512),
+    "size" CHAR(512),
+    "fur_color" CHAR(512),
+    "age" CHAR(512),
+    "house_trained" CHAR(512),
+    "kid_safe" CHAR(512),
+    "pet_safe" CHAR(512)
+);
+success!
+timestamp: 2021-06-05T15:33:24.597306
+CREATE TABLE "curr_dogs"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "dog_index" CHAR(512)
+);
+success!
+timestamp: 2021-06-05T15:33:24.612498
+CREATE TABLE "dog"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "list_in" INTEGER REFERENCES "curr_dogs" ("id") ON DELETE CASCADE  ,
+    "dog_id" CHAR(512),
+    "dog_name" CHAR(512),
+    "dog_breed" CHAR(512),
+    "dog_age" CHAR(512),
+    "dog_gender" CHAR(512),
+    "dog_size" CHAR(512),
+    "dog_fur" CHAR(512),
+    "dog_potty" CHAR(512),
+    "dog_kid" CHAR(512),
+    "dog_location" CHAR(512),
+    "dog_url" CHAR(512),
+    "dog_compscore" INTEGER,
+    "dog_photos" CHAR(512)
+);
+success!
+timestamp: 2021-06-05T15:33:24.627442
+CREATE TABLE "recent_matches"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "dog_index" CHAR(512),
+    "dog_name" CHAR(512),
+    "dog_images" CHAR(512)
+);
+success!
+timestamp: 2021-06-05T15:33:24.640861
+CREATE TABLE "favorites"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_owned" INTEGER REFERENCES "dbuser" ("id") ON DELETE CASCADE  ,
+    "table_index" CHAR(512),
+    "payload_dog" INTEGER REFERENCES "dog" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2021-06-06T04:18:00.630646
+ALTER TABLE "user_pref" ADD "gender" CHAR(512);
+timestamp: 2021-06-06T04:18:00.655543
+ALTER TABLE "user_pref" ADD "fur" CHAR(512);
+timestamp: 2021-06-06T04:18:00.667382
+ALTER TABLE "user_pref" ADD "potty" CHAR(512);
+timestamp: 2021-06-06T04:18:00.679797
+ALTER TABLE "user_pref" ADD "kid" CHAR(512);
+timestamp: 2021-06-06T04:18:00.693197
+ALTER TABLE "user_pref" ADD "location" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!

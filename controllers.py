@@ -42,9 +42,8 @@ url_signer = URLSigner(session)
 
 # ============ INDEX.JS ========================= 
 @action('index', method=["GET", "POST"])
-@action.uses(url_signer, auth, auth.user, 'index.html')
+@action.uses(db, auth, auth.user, 'index.html')
 def index():
-
     returning_user = db(db.dbuser.auth == get_user() ).select().first()
     if returning_user is None: # user has no entry
         db.dbuser.insert(
@@ -64,6 +63,8 @@ def index():
         add_match_url = URL('add_match',signer=url_signer),
         get_curr_matches_url = URL('get_curr_matches',signer=url_signer),
         get_pref_url = URL('get_pref', signer=url_signer),
+        url_signer = url_signer,
+        auth = get_user(),
     )
 
 @action('update_idx', method="POST")
@@ -170,9 +171,14 @@ def get_curr_dogs():
 
 
 # =============== PROFILE_PAGE.JS =========================
-@action('profile', method="GET")
+@action('profile/<userID:int>', method="GET")
 @action.uses(db, session, auth.user, 'profile.html')
 def profile(userID=None):
+    assert userID is not None
+    user = db.dbuser[userID]
+    if user is None:
+        redirect(URL('index'))
+
     # open json files and get list of preference options
     breed_f = open(BREED_JSON_FILE)
     breeds_json = json.load(breed_f)
@@ -205,6 +211,9 @@ def profile(userID=None):
         colors_list = colors_list,
         set_pref_url = URL('set_pref', signer=url_signer),
         get_pref_url = URL('get_pref', signer=url_signer),
+        url_signer = url_signer,
+        user = user,
+        auth = get_user(),
     )
 
 @action('set_pref', method="POST")
@@ -275,14 +284,22 @@ def get_pref():
 
 
 # =============== MATCHES.JS =========================
-@action('matches', method=["GET", "POST"])
+@action('matches/<userID:int>', method=["GET", "POST"])
 @action.uses(db, session, auth.user, 'matches.html')
 def matches(userID=None):
+    assert userID is not None
+    user = db.dbuser[userID]
+    
+    if user is None:
+        redirect(URL('index'))
 
     return dict(
         get_matches_id_url=URL('get_matches_id',signer=url_signer),
         get_curr_matches_url=URL('get_curr_matches', signer=url_signer),
         delete_match_url=URL('delete_match', signer=url_signer),
+        url_signer=url_signer,
+        user=user,
+        auth = get_user(),
     )
 
 @action('add_match', method="POST")

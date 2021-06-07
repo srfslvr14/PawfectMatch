@@ -38,7 +38,6 @@ for item in settings.LOGGERS:
 if os.environ.get("GAE_ENV"):
     db = DAL(
         settings.CLOUD_DB_URI,
-        pool_size=settings.CLOUD_DB_POOL_SIZE,
         migrate=settings.CLOUD_DB_MIGRATE,
         fake_migrate=settings.CLOUD_DB_FAKE_MIGRATE,
     )
