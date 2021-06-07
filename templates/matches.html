@@ -7,126 +7,164 @@
 </style>
 
 <div class="section" id="vue-matches" v-cloak>
-    <!--Contact pop up-->
-    <div class="modal" id="contact_modal" v-cloak>
-        <div class="modal-background" onclick="show_contact_modal()"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Shelter's Contact Info</p>
-            <button class="delete" onclick="show_contact_modal()" aria-label="close"></button>
-          </header>
-          <section class="modal-card-body">
-            <progress v-if="!loading" class="progress is-small" max="100">15%</progress>
-            <div class="tile is-info">
-                <span v-if= "loading">
-                    <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
-                    <div class="subtitle" v-if= "email != null "> Email: {{email}} </div>
-                    <div class="subtitle" v-if= "phone != null "> Number: {{phone}} </div>
-                    <div class="subtitle" v-if= "address != null "> Location: {{address}} </div>
-                    
-                </span>
-            </div>
-          </section>
-        </div>
-    </div>
+  <!--Contact pop up-->
+  <div class="modal" id="contact_modal" v-cloak>
+    <div class="modal-background" onclick="show_contact_modal()"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Shelter's Contact Info</p>
+        <button class="delete" onclick="show_contact_modal()" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <progress v-if="!loading" class="progress is-small" max="100">15%</progress>
+        <div class="tile is-info">
+          <span v-if="loading">
+            <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
+            <div v-if="email"> &#x1F4E7 &nbsp {{email}} </div>
+            <div v-if="phone && phone != ' '"> &#x1F4DE &nbsp {{phone}} </div>
+            <div v-if="address"> &#x1F4CD &nbsp {{address}} </div>
 
-    <!-- delete pop up-->
-    <div class="modal" id="delete_modal" v-cloak>
-      <div class="modal-background" onclick="show_delete_modal()"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Delete Match?</p>
-        </header>
-        <section class="modal-card-body">
-          Are you sure you want to delete your match?          
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-danger" @click="delete_match(disp_cards_idx)">Delete</button>
-          <button class="button" onclick="show_delete_modal()">Cancel</button>
-        </footer>
+          </span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- delete pop up-->
+  <div class="modal" id="delete_modal" v-cloak>
+    <div class="modal-background" onclick="show_delete_modal()"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Delete Match?</p>
+      </header>
+      <section class="modal-card-body">
+        Are you sure you want to delete your match?
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-danger" @click="delete_match(disp_cards_idx)">Delete</button>
+        <button class="button" onclick="show_delete_modal()">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <!--Info pop up-->
+  <div class="modal" id="info_modal">
+    <div class="modal-background" onclick="show_info_modal()"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Dog Info</p>
+        <button class="delete" onclick="show_info_modal()" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <progress v-if="!loading" class="progress is-small" max="100">15%</progress>
+        <div class="tile is-info">
+          <i class="fa-solid fa-spinner-third fa-"></i>
+          <span v-if="loading">
+            <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
+            <!-- display only if there is info for the property -->
+            <p v-if="breed" class="subtitle">
+              &#x1F436 &nbsp {{breed}}
+            </p>
+
+            <div style="margin-bottom: 3%;">
+              <p v-if="gender">
+                <strong>Gender: </strong> {{gender}}
+              </p>
+              <p v-if="age">
+                <strong>Age: </strong> {{age}}
+              </p>
+              <p v-if="size">
+                <strong>Size: </strong> {{size}}
+              </p>
+              <p v-if="fur">
+                <strong>Fur: </strong> {{fur}}
+              </p>
+            </div>
+
+            <!-- display only if true -->
+            <div v-if="potty || kid">
+              <span v-if="kid" class="tag is-danger">
+                <strong> Kid Friendly</strong>
+              </span>
+              <span v-if="potty" class="tag is-warning">
+                <strong>Potty Trained</strong>
+              </span>
+
+              <br>
+            </div>
+            <br>
+            <a v-bind:href="url" target="_blank" style="font-size: 140%; margin-top: 10%;"> &#x1F50E &nbsp View on
+              Petfinder.com</a>
+          </span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div>
+    <div class=" title has-text-centered" style="color: #985d2d;"><b>My Recent Matches</b></div>
+    <br>
+    <div v-if="match_cards.length == 0" class="container block">
+      <div>
+        <center>You Have No Recent Matches </center>
+        <center>Visit the Home Page And Start Swiping To View Your Matches </center>
+        <br>
+        <center>
+          <img style="max-height: 70%; max-width: 100%;"
+            src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+        </center>
+
       </div>
     </div>
-
-    <!--Info pop up-->
-    <div class="modal" id="info_modal">
-        <div class="modal-background" onclick="show_info_modal()"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Dog Info</p>
-            <button class="delete" onclick="show_info_modal()" aria-label="close"></button>
-          </header>
-          <section class="modal-card-body">
-            <progress v-if="!loading" class="progress is-small" max="100">15%</progress>
-            <div class="tile is-info">
-                <i class="fa-solid fa-spinner-third fa-"></i>
-                <span v-if="loading">
-                  <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{name}}</strong></p>
-                  <div class="subtitle"> {{breed}}</div>
-                  <div class="subtitle"> {{gender}} </div>
-                  <div class="subtitle"> {{age}} </div>
-                  <div class="subtitle"> {{size}} Sized</div>
-                  <div class="subtitle"> fur: {{fur}} </div>
-                  <div class="subtitle" v-if="potty">  Potty Trained </div>
-                  <div class="subtitle" v-if="!potty"> Not Potty Trained </div>
-                  <a v-bind:href="url" target="_blank">View on Petfinder.com</a>
-                </span>
-            </div>
-          </section>
-        </div>
-    </div>
-
-    <div>
-        <div class=" title has-text-centered" style="color: #985d2d;"><b>My Recent Matches</b></div>
-        <br>
-      
-        <div class="columns is-multiline">
-          <!-- loop through -->
-          <div class="column is-one-quarter-desktop is-half-tablet" v-for="match in match_cards" >
-            <div class="card">
-              <div class="card-image" @click="getMatchInfoFromAPI(match.dog_index)" style="cursor: pointer;">
-                <figure class="image is-3by2">
-                  <!-- for image styling: https://www.digitalocean.com/community/tutorials/css-cropping-images-object-fit -->
-                  <img v-bind:src="match.dog_images" alt="" style="object-fit: cover; object-position: 100% 0;">
-                </figure>
-              </div>
-              <div class="content" style="margin: 3%;cursor: pointer;" @click="getMatchInfoFromAPI(match.dog_index)">
-                <h1>{{match.dog_name}}</h1>
-              </div>
-              <footer class="card-footer">
-                <a class="card-footer-item has-text-primary" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
-                  <i class="fa fa-address-book-o fa-lg"></i>
-              </a>
-                <a class="card-footer-item has-text-danger" id="tog" @click="select_delete_match(match._idx)">
-                  <i class="fa fa-trash fa-lg"></i>
-                </a>
-              </footer>
-            </div>
+    <br>
+    <div class="columns is-multiline">
+      <!-- loop through -->
+      <div class="column is-one-quarter-desktop is-half-tablet" v-for="match in match_cards.slice().reverse()">
+        <div class="card">
+          <div class="card-image" @click="getMatchInfoFromAPI(match.dog_index)" style="cursor: pointer;">
+            <figure class="image is-3by2">
+              <!-- for image styling: https://www.digitalocean.com/community/tutorials/css-cropping-images-object-fit -->
+              <img v-bind:src="match.dog_images" alt="" style="object-fit: cover; object-position: 100% 0;">
+            </figure>
           </div>
+          <div class="content" style="margin: 3%;cursor: pointer;" @click="getMatchInfoFromAPI(match.dog_index)">
+            <h1>{{match.dog_name}}</h1>
+          </div>
+          <footer class="card-footer">
+            <a class="card-footer-item has-text-primary" id="tog" @click="getMatchContactFromAPI(match.dog_index)">
+              <i class="fa fa-address-book-o fa-lg"></i>
+            </a>
+            <a class="card-footer-item has-text-danger" id="tog" @click="select_delete_match(match._idx)">
+              <i class="fa fa-trash fa-lg"></i>
+            </a>
+          </footer>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-   let get_matches_id_url = "[[=XML(get_matches_id_url)]]";
-   let get_curr_matches_url = "[[=XML(get_curr_matches_url)]]";
-   let delete_match_url = "[[=XML(delete_match_url)]]";
+  let get_matches_id_url = "[[=XML(get_matches_id_url)]]";
+  let get_curr_matches_url = "[[=XML(get_curr_matches_url)]]";
+  let delete_match_url = "[[=XML(delete_match_url)]]";
 
-    function show_contact_modal(){
-        //console.log("click");
-        var contact_modal = document.getElementById("contact_modal");
-        contact_modal.classList.toggle('is-active')
-    }
-    function show_delete_modal(match_idx) {
-        //console.log("click");
-        var delete_modal = document.getElementById("delete_modal");
-        delete_modal.classList.toggle('is-active')
-    }
+  function show_contact_modal() {
+    //console.log("click");
+    var contact_modal = document.getElementById("contact_modal");
+    contact_modal.classList.toggle('is-active')
+  }
+  function show_delete_modal(match_idx) {
+    //console.log("click");
+    var delete_modal = document.getElementById("delete_modal");
+    delete_modal.classList.toggle('is-active')
+  }
 
-    function show_info_modal(){
-        //console.log("click");
-        var info_modal = document.getElementById("info_modal");
-        info_modal.classList.toggle('is-active')
-    }
+  function show_info_modal() {
+    //console.log("click");
+    var info_modal = document.getElementById("info_modal");
+    info_modal.classList.toggle('is-active')
+  }
 </script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/sugar.min.js"></script>

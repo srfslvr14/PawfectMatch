@@ -2,11 +2,11 @@
 
 <style>
     [v-cloak] {
-         display: none;
+        display: none;
     }
 </style>
 
-<div class="title has-text-centered" style="padding-top: 2%;">
+<div class="title has-text-centered" style="padding-top: 5%; color: #985d2d;">
     Start Swiping
 </div>
 
@@ -25,86 +25,126 @@
     </div> -->
 
     <!-- NO MATCH BUTTON -->
-    <div class="columns is-mobile is-vcentered is-flex-desktop">
-    <div class="column is-1">
-        <a id="dislike_button" class="button is-info" @click="no_match()">
-            <i class="fa fa-times"></i>
-            <!-- &nbsp; No Match! -->
-        </a>
-    </div>
-    
-    <!-- DOG CARD -->
-    <div class="column is-10">
-        <!-- CURRENT PUP CARD DISPLAYED -->
-        <div v-if="!api_loading && !no_results && !change_pref" class="container">
-            <div v-for="p in pup_cards">
-                <div v-if="disp_cards_idx == p._idx" class="box">
-                    <div class="columns">
-                        <div class="column is-three-fifths">
-                            <figure class="image">
-                                <img style="max-height: 600px; object-fit: cover; object-position: 100% 0;" v-bind:src="p.image" alt="photo" >
-                            </figure>
-                            <br>
-                            <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{p.name}}</strong></p>
-                        </div>
+    <div class="columns is-mobile is-vcentered is-flex-desktop" style="margin-top: -5%;">
+        <div class="column is-1">
+            <!-- Triangle path example https://codepen.io/knod/pen/YqLgwR -->
+            <svg width="40" height="120">
+                <a id="dislike_button" @click="no_match()">
+                    <!-- creates click bounds -->
+                    <path d="M 0, 50 45, 5 97.5, 175 z" fill="rgb(51, 155, 255)" />
+                    <!-- centers text -->
+                    <text x="20" y="55" fill="#FFFFFF" text-anchor="middle" alignment-baseline="middle">
+                        &#x274C
+                    </text>
+                    hello there?
+                </a>
+            </svg>
 
-                        <div class="column is-two-fifths">
-                            <!-- <p class="info_box"> Index: {{p._idx}} </p> -->
-                            <p class="subtitle"> <strong>Breed: </strong>         {{p.breed}}      </p>
-                            <p class="subtitle"> <strong>Gender: </strong>        {{p.gender}}     </p>
-                            <p class="subtitle"> <strong>Age: </strong>           {{p.age}}        </p>
-                            <p class="subtitle"> <strong>Size: </strong>          {{p.size}}       </p>
-                            <p class="subtitle"> <strong>Fur: </strong>           {{p.fur}}        </p>
-                            <div v-if="p.potty == 'True' " class="box">
-                                <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
+        </div>
+
+        <!-- DOG CARD -->
+        <div class="column is-10">
+            <!-- CURRENT PUP CARD DISPLAYED -->
+            <div v-if="!api_loading && !no_results && !change_pref" class="container">
+                <div v-for="p in pup_cards">
+                    <div v-if="disp_cards_idx == p._idx" class="box">
+                        <div class="columns">
+                            <div class="column is-three-fifths">
+                                <figure class="image">
+                                    <img style="max-height: 70%; max-width: 100%; object-fit: cover; object-position: 100% 0;"
+                                        v-bind:src="p.image" alt="photo">
+                                </figure>
+                                <br>
+                                <p class="" style="font-size: 250%; padding-bottom: 2%;"><strong>{{p.name}}</strong></p>
                             </div>
-                            <div v-if="p.kid == 'True' " class="box">
-                                <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
+
+                            <div class="column is-two-fifths">
+                                <!-- <p class="info_box"> Index: {{p._idx}} </p> -->
+                                <p class="title" style="color: #985d2d;">About Me</p>
+                                <br>
+                                <!-- display only if there is info for the property -->
+                                <p v-if="p.breed" class="subtitle">
+                                    <strong>Breed: </strong> {{p.breed}}
+                                </p>
+                                <p v-if="p.gender" class="subtitle">
+                                    <strong>Gender: </strong> {{p.gender}}
+                                </p>
+                                <p v-if="p.age" class="subtitle">
+                                    <strong>Age: </strong> {{p.age}}
+                                </p>
+                                <p v-if="p.size" class="subtitle">
+                                    <strong>Size: </strong> {{p.size}}
+                                </p>
+                                <p v-if="p.fur" class="subtitle">
+                                    <strong>Fur: </strong> {{p.fur}}
+                                </p>
+                                <p class="subtitle">
+                                    <strong>Location: </strong> {{p.location}}
+                                </p>
+
+                                <!-- display only if true -->
+                                <span v-if="p.potty == 'True'" class="tag is-warning is-light">
+                                    <strong>Potty Trained</strong>
+                                </span>
+                                <span v-if="p.kid == 'True' " class="tag is-danger is-light">
+                                    <strong> Kid Friendly</strong>
+                                </span>
+                                <br>
                             </div>
-                            <br>
-                            <p class="subtitle"> <strong>Potty Trained: </strong> {{p.potty}}      </p>
-                            <p class="subtitle"> <strong>Kid Friendly: </strong>  {{p.kid}}        </p>
-                            <p class="subtitle"> <strong>Location: </strong>      {{p.location}}        </p>
-                            <!-- <p class="subtitle"> <strong>Distance: </strong>      {{p.location}}   </p> -->
-                            <!-- <p class="info_box"> Url: {{p.url}} </p> -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="(api_loading || no_results) && !change_pref" class="container block"> <br>
-            <div>
-                loading more doggos... <br>
-                <!-- <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i> -->
-                <img src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+            <div v-if="(api_loading || no_results) && !change_pref" class="container block"> <br>
+                <div>
+                    <center>loading more doggos... </center>
+                    <br>
+                    <img style="max-height: 70%; max-width: 100%;"
+                        src="https://cdn.dribbble.com/users/115601/screenshots/4238006/doggy.gif"></img>
+                </div>
             </div>
-        </div>
-        <div v-if="change_pref" class="container block">
-            <br>
-            <div>
-                <div class="title">We are brodening your preferences in order to give you results from your area </div> <br>
-                <!-- <img src=""></img> -->
-                <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red" ></i>
-            </div>
-        </div>
-    </div>
+            <div v-if="change_pref" class="container block">
+                <br>
+                <div>
+                    <center>
+                        <i class="fa fa-spinner fa-spin" style="font-size:xxx-large; color:red"></i>
+                        <br>
+                        <div class="title">
+                            <p style="color: #985d2d;">We are brodening your preferences in order to give you results
+                                from your area...</p>
+                        </div>
+                    </center>
+                </div>
 
-    <!-- MATCH BUTTON -->
-    <div class="column is-1">
-        <a id="like_button" class="button is-danger" @click="match()">
-            <i class="fa fa-heart"></i>
-            <!-- &nbsp; Match! -->
-        </a>
-    </div>
+            </div>
+        </div>
+
+        <!-- MATCH BUTTON -->
+        <div class="column is-1">
+            <svg width="120" height="120">
+                <a id="like_button" @click="match()">
+                    <!-- creates click bounds -->
+                    <path d="M 50,
+                        50 5,
+                        95 5,
+                        5 
+                        z" fill="rgb(230, 41, 101)" />
+                    <!-- centers text -->
+                    <text x="20" y="55" fill="#FFFFFF" text-anchor="middle" alignment-baseline="middle">
+                        &#x1F49B
+                    </text>
+                </a>
+            </svg>
+        </div>
     </div>
 </div>
 
 <script>
     let set_curr_dogs_url = "[[=XML(set_curr_dogs_url)]]";
-    let get_curr_dogs_url = "[[=XML(get_curr_dogs_url)]]"; 
-    let update_idx_url = "[[=XML(update_idx_url)]]";  
+    let get_curr_dogs_url = "[[=XML(get_curr_dogs_url)]]";
+    let update_idx_url = "[[=XML(update_idx_url)]]";
     let get_user_idx_url = "[[=XML(get_user_idx_url)]]";
-    let add_match_url = "[[=XML(add_match_url)]]"  
+    let add_match_url = "[[=XML(add_match_url)]]"
     let get_pref_url = "[[=XML(get_pref_url)]]";
 </script>
 
