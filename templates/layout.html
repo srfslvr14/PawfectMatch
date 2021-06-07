@@ -33,10 +33,10 @@
         </div>
 
         <div class="navbar-end">
-          [[if globals().get('user'):]]
+          [[if globals().get('user') != None:]]
           <a class="navbar-item " href="[[=URL('index')]]">Home</a>
-          <a class="navbar-item " href="[[=URL('matches')]]">Matches</a>
-          <a class="navbar-item " href="[[=URL('profile')]]">Profile</a>
+          <a class="navbar-item " href="[[=URL('matches', auth, signer = url_signer)]]">Matches</a>
+          <a class="navbar-item " href="[[=URL('profile', auth, signer = url_signer)]]">Profile</a>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-primary">
               <!-- [[=globals().get('user').get('email')]] -->
