@@ -11,11 +11,13 @@
 </div>
 
 <div class="section" id="vue-target" v-cloak>
-
     <div v-if="no_zip" class="container block">
-        <div> Please set your location and your preferences in order to receive better results! </div> <br>
+        <p class="has-text-danger">
+            <i class="fa fa-exclamation-circle"></i>
+            Please set your location via your profile page in order to receive better results!
+        </p>
+        <br><br><br>
     </div>
-
 
     <!-- <div>
         <p>IF THE BELOW FIELDS ARE EMPTY, CLICK API TEST</p>
@@ -131,7 +133,7 @@
                         z" fill="rgb(230, 41, 101)" />
                     <!-- centers text -->
                     <text x="20" y="55" fill="#FFFFFF" text-anchor="middle" alignment-baseline="middle">
-                        &#x1F49B
+                        &#x1F499
                     </text>
                 </a>
             </svg>
