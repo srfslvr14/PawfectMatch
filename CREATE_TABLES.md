@@ -73,6 +73,14 @@ CREATE TABLE `recent_matches` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_owned` int(11), FOREIGN KEY (`user_owned`) REFERENCES `dbuser` (`id`) ON DELETE CASCADE,
+  `payload_dog` int(11), FOREIGN KEY (`payload_dog`) REFERENCES `dog` (`id`) ON DELETE CASCADE,
+  `table_index` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `auth_user_tag_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `path` varchar(512) DEFAULT NULL,
